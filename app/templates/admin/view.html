@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+{% block body %}
+<main ng-controller="EditController">
+	<h1>View Form Submission</h1>
+	<h5>Form ID: {{data.formID}}</h5>
+	<json-formatter open="1" json="{{data.data}}"></json-formatter>
+</main>
+{% endblock %}

@@ -1,0 +1,39 @@
+application: thousandblurbs
+version: 11
+runtime: python27
+api_version: 1
+threadsafe: no
+
+skip_files:
+- ^node_modules$
+
+libraries:
+
+- name: django
+  version: "1.2"
+
+handlers:
+
+- url: /assets/
+  static_dir: assets
+
+- url: /bower_components/
+  static_dir: bower_components
+
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+  
+# api server
+- url: /_api/v1/(.*)
+  script: app.api_v1.app
+
+# admin server
+- url: /admin/.*
+  script: app.admin.app
+  login: admin
+
+# app server
+- url: /(.*)
+  script: app.app
+

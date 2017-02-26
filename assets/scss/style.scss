@@ -1,0 +1,23 @@
+@import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro';
+
+// import custom variables
+@import "_variables";
+
+@import "../../bower_components/bootsmooth/scss/bootsmooth";
+
+.nav {
+    height: 56px;
+    
+    .nav-logo {
+        float: left;
+        padding: 8px;
+
+	    img{
+	       
+    		@extend .img;
+    		@extend .shadow;
+    		max-height: 40px; 
+    		border-radius: 25%;
+	    }
+	}
+}

@@ -1,0 +1,13 @@
+python_http_client/__init__.py,sha256=MF64bwUCd4sm3dvcxZnkb4ujHtxT_KeuXdD0nVieEt4,27
+python_http_client/client.py,sha256=jA88ZybVdgbE01txq3v8O58Sh6KJy1QGvM6RhcTWqX4,6917
+python_http_client/config.py,sha256=kUrz71s5aT3F1uNq8ZJzdlfVCUZFTnjW4zFCDr5HFNg,1113
+python_http_client-2.1.1.dist-info/DESCRIPTION.rst,sha256=MRv_P3Le77CqFtpEtqgUenTSoygnBhBR5u0-FDnVT9o,3751
+python_http_client-2.1.1.dist-info/METADATA,sha256=b6oW3278CIp9W89uQKpDo8bGM3mFIARsCEHWAPLe3Bs,4402
+python_http_client-2.1.1.dist-info/metadata.json,sha256=NfHklot83SEaVl6SHNq4WYDW4YW-l1AEDkEm_dm9FzM,818
+python_http_client-2.1.1.dist-info/RECORD,,
+python_http_client-2.1.1.dist-info/top_level.txt,sha256=2JnUimcxRHkpXlcL22LcQStBT2-2f7uE6bN32da2nX0,19
+python_http_client-2.1.1.dist-info/WHEEL,sha256=54bVun1KfEBTJ68SHUmbxNPj80VxlQ0sHi4gZdGZXEY,92
+python_http_client-2.1.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+python_http_client/config.pyc,,
+python_http_client/client.pyc,,
+python_http_client/__init__.pyc,,

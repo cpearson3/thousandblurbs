@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index">
+<title>{{post.title}}</title>
+<meta name="description" content="{{post.description}}">
+<meta name="description" content="{{post.description}}">
+<meta property="og:title" content="{{post.title}}">
+<meta property="og:description" content="{{post.description}}">
+<meta property="og:image" content="{{post.image}}">
+<meta property="og:url" content="{{post.base_url}}">
+<meta name="twitter:title" content="{{post.title}}">
+<meta name="twitter:description" content="{{post.description}}">
+<meta name="twitter:image" content="{{post.image}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/assets/build/style.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+<script src="/bower_components/bootsmooth/dist/bootsmooth.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+	<div class="container">
+		<div class="nav-title"  data-nav-toggle="#mainNav">
+			Thousandblurbs
+		</div>
+		<ul id="mainNav" class="nav-menu">
+			<li class="menu-item"><a href="http://github.com/cpearson3/thousandblurbs"><i class="fa fa-github"></i> Github Project</a></li>
+		</ul>
+	</div>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+<footer class="footer">
+	<div class="container">
+		<p class="text-center">Thousandblurbs</p>
+	</div>
+</footer>
+
+</body>
+</html>

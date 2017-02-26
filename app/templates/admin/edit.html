@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% block body %}
+<main ng-controller="EditController">
+	<h1>Add / Edit Form Submission</h1>
+	<h5>Form ID: {{data.formID}}</h5>
+	<form class="form" ng-submit="submit($event)" id="lead-form">
+		<textarea rows="10" class="form-input" placeholder="Data" id="data" required>{{data.data}}</textarea>
+		<br>
+		<input type="submit" class="btn-secondary" value="Save">
+	</form>
+</main>
+{% endblock %}
