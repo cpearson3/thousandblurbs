@@ -1,16 +1,16 @@
-/* Admin controller */
+/* View Submission controller */
 
 /* global $ */
 /* global angular */
 /* global location */
 /* global vex */
 
-export function AdminController($scope, $timeout) {
-	console.log('in the dashboard');
+export function ViewSubmissionController($scope, $timeout) {
+	console.log('viewing form submissions');
 
 	$scope.delete = function(submission_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this contact',
+			message: 'Are you sure you want to delete this submission',
 			callback: function(val) {
 				if (val) {
 					console.log('yes: ' + submission_key);
@@ -19,16 +19,14 @@ export function AdminController($scope, $timeout) {
 						key: submission_key
 					};
 
-					$.post('/_api/v1/delete/', data)
+					$.post('/_api/forms/delete', data)
 					.done(function(result) {
 						console.log(result);
 						//location.href = location.href;
 						vex.dialog.alert({
-							message:'Contact deleted. Refreshing page',
+							message:'Submission deleted. Refreshing page',
 							callback: function() {
-								$timeout(function() {
-									location.reload(true);
-								}, 300)
+								window.location = '/admin/forms/';
 							}
 						});
 					})

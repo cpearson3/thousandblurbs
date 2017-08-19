@@ -1,32 +1,37 @@
-/* Edit Controller */
+/* AddNamespaceController */
 
 /* global $ */
 /* global angular */
 /* global location */
 /* global vex */
 
-export function EditController($scope) {
+export function AddNamespaceController($scope) {
 
+	$scope.data = {
+		namespaceID: '',
+		description: ''
+	}
+	
 	$scope.key = window.uQuery('key');
 
-	// submit contact form
-	$scope.submit = function(e) {
-
-		var formElement = angular.element(e.target);
-
-		var data = {
-			data: $('#data').val(),
-			key: $scope.key	
-		};		
-
-		$.post('/_api/v1/save/', data)
+	// submit namepsace data
+	$scope.submit = function() {
+		
+		console.log($scope.data);
+		
+		if (($scope.data.description == '') || ($scope.data.namespaceID == '')) {
+			vex.dialog.alert('Enter a value for all fields');
+			return;
+		}
+ 
+		$.post('/_api/namespace/save', $scope.data)
 		.done(function(result) {
 			console.log('The data was saved.');
 			console.log(result);
 			vex.dialog.alert({
-				'message': 'Submission has been saved',
+				'message': 'Namespace has been saved',
 				'callback': function() {
-					location.href = '/admin/';
+					window.location = '/admin/namespace/';
 				}	
 			});
 			

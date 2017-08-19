@@ -1,15 +1,12 @@
-# Form Service
+# Namespace Service
 # similar to the angular pattern, put data services here
 
 from google.appengine.ext import ndb
 from .. import models
 
-import NamespaceService
-
 import json
 import logging
 
-# Upload File Service
 # Get All Method
 
 def GetAll():
@@ -17,12 +14,11 @@ def GetAll():
 		# build result list
 		result = []
 		# get all, order by datetime
-		query = models.FormSubmission.query().order(-models.FormSubmission.datetime)
+		query = models.Namespace.query().order(-models.Namespace.datetime)
 		for i in query.iter():
 			obj = {
 				'key': i.key.urlsafe(),
-				'data': i.data,
-				'formID': i.formID,
+				'description': i.description,
 				'namespaceID': i.namespaceID,
 				'datetime': str(i.datetime)
 			}
@@ -32,7 +28,25 @@ def GetAll():
 
 	except Exception as e:
 		# handle error on get
-		logging.warning('FormService.GetAll ERROR: ' + str(e))
+		logging.warning('NamespaceService.GetAll error: ' + str(e))
+		return None
+
+# get all namespaceIDs
+def GetAllIDs():
+	try:
+		# build result list
+		result = []
+		# get all, order by datetime
+		query = models.Namespace.query()
+		
+		for i in query.iter():
+			result.append(str(i.namespaceID))
+
+		return result
+
+	except Exception as e:
+		# handle error on get
+		logging.warning('NamespaceService.GetAllIDs error: ' + str(e))
 		return None
 
 # get by key
@@ -43,8 +57,7 @@ def Get(key):
 		i =  ndb.Key(urlsafe=key).get()
 		result = {
 			'key': i.key.urlsafe(),
-			'data': i.data,
-			'formID': i.formID,
+			'description': i.description,
 			'namespaceID': i.namespaceID,
 			'datetime': str(i.datetime),
 		}
@@ -53,32 +66,13 @@ def Get(key):
 
 	except Exception as e:
 		# handle error on get
-		logging.warning('FormService.Get ERROR: ' + str(e))
+		logging.warning('NamespaceService.Get error: ' + str(e))
 		return None
 
 # Save Method
 def Save(data):
 	
-	if 'formID' not in data:
-		logging.warning('FormService.Save ERROR: no formID')
-		return None
-	
 	if 'namespaceID' not in data:
-		logging.warning('FormService.Save ERROR: no namespaceID')
-		return None
-		
-	# validate namespace
-	namespaces = NamespaceService.GetAllIDs()
-	
-	if namespaces:
-		logging.warning('Namespace IDs Retrieved: ' + str(namespaces))
-		
-		if data['namespaceID'] not in namespaces:
-			logging.warning('FormService.Save ERROR: Namespace %s is not valid' % (data['namespaceID']))
-			return None
-		
-	else:
-		logging.warning('FormService.Save ERROR: Could not retrieve namespace IDs')
 		return None
 
 	if 'key' in data:
@@ -86,28 +80,27 @@ def Save(data):
 			newObj = ndb.Key(urlsafe=data['key']).get()
 
 			if newObj == None:
-				logging.warning('Key not found, new object created')
-				newObj = models.FormSubmission()
+				logging.warning('key not found, new object created')
+				newObj = models.Namespace()
 		else:
-			newObj = models.FormSubmission()
+			newObj = models.Namespace()
 
 	else:
 		logging.warning('no key passed: creating new obj')
-		newObj = models.FormSubmission()
+		newObj = models.Namespace()
 
 	try:
 		# save some data in a model
-		newObj.data = json.dumps(data['data'])
-		newObj.formID = data['formID']
+		newObj.description = data['description']
 		newObj.namespaceID = data['namespaceID']
 		newObj.put()
 
-		logging.warning('FormService.Save SUCCESS')
+		logging.warning('NamespaceService.Save SUCCESS')
 		return newObj.key
 
 	except Exception as e:
 		# handle error on save
-		logging.warning('FormService.Save ERROR: ' + str(e))
+		logging.warning('NamespaceService.Save error: ' + str(e))
 		return None
 
 # Delete Method
@@ -122,5 +115,5 @@ def Delete(key):
 
 	except Exception as e:
 		# handle error on get
-		logging.warning('FormService.Delete ERROR: ' + str(e))
+		logging.warning('NamespaceService.Delete error: ' + str(e))
 		return None

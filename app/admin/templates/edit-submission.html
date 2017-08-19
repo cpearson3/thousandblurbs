@@ -1,7 +1,9 @@
-{% extends "admin/base.html" %}
+{% extends "base.html" %}
 {% block body %}
+<header>
+	<h1>Edit Form Submission</h1>
+</header>
 <main ng-controller="EditController">
-	<h1>Add / Edit Form Submission</h1>
 	<h5>Form ID: {{data.formID}}</h5>
 	<form class="form" ng-submit="submit($event)" id="lead-form">
 		<textarea rows="10" class="form-input" placeholder="Data" id="data" required>{{data.data}}</textarea>

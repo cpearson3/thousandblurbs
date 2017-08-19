@@ -1,6 +1,6 @@
 import logging
 from config import *
-
+from util import *
 #  Import supporting libs
 from flask import Flask, render_template, redirect, request
 
@@ -31,37 +31,10 @@ def AppspotRedirect():
 
 # URL Routes
 @app.route('/', defaults={'path': ''})
-@app.route('/<path>/')
-def PageController(path):
-
-	# thousandblurbs 0.1.0
-	
-	# Get URL routes from global pages dictionary
-	site_paths = SITE_PAGES.keys()
-	
-	if path in site_paths:
-		
-		# Get the global context and set SEO Fields
-		context = SITE_CONTEXT
-		context['base_url'] = request.url
-		context['description'] = SITE_PAGES[path]['description']
-		context['title'] = SITE_PAGES[path]['title']
-		
-		# Render page template
-		return render_template(path+'.html',post=context)
-		
-	elif path == '':
-		
-		# BUG?: context must be explicitly set
-		context = SITE_CONTEXT
-		context['title'] = SITE_TITLE
-		context['description'] = SITE_DESCRIPTION
-		
-		# Return index
-		return render_template('index.html',post=context)
-	else:
-		# Return 404
-		return render_template('404.html', post=SITE_CONTEXT), 404
+def IndexController(path):
+	# Return index
+	data = initPageData()
+	return render_template('index.html', data=data)
 	
 # Logout handler
 @app.route('/logout')
@@ -72,10 +45,11 @@ def LogoutController():
 # 404 handler	
 @app.errorhandler(404)
 def page_not_found(e):
-
-	return render_template('404.html', post=SITE_CONTEXT), 404
+	data = initPageData()
+	return render_template('404.html', data=data), 404
 	
 # 500 handler	
 @app.errorhandler(500)
 def server_error(e):
-	return render_template('500.html', post=SITE_CONTEXT), 500
+	data = initPageData()
+	return render_template('500.html', data=data), 500

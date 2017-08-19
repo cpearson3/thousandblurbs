@@ -25,8 +25,8 @@ handlers:
   upload: robots.txt
   
 # api server
-- url: /_api/v1/(.*)
-  script: app.api_v1.app
+- url: /_api/(.*)
+  script: app.api.app
 
 # admin server
 - url: /admin/.*

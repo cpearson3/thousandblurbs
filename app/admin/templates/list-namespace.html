@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>Namespaces</h1>
+</header>
+<main>
+	{% if data.namespaces %}
+	<p><a href="/admin/namespace/add" class="btn waves-light waves-effect">Add Namespace</a></p>
+	<table class="table table-border scrollableX">
+		<thead class="h5">
+			<tr><td>Namespace ID</td><td>Description</td><td>Date/Time<td></tr>
+		</thead>
+		<tbody>
+		{% for namespace in data.namespaces %}
+		<tr>
+			<td>{{namespace.namespaceID}}</td>
+			<td>{{namespace.description}}</td>
+			<td>{{ namespace.datetime }}</td>
+			<td class="text-right">
+				<a href="/admin/namespace/view?key={{ namespace.key }}" class="btn">View</a> 
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>No namespaces have been created yet.</p>
+	<p><a href="/admin/namespace/add" class="btn waves-light waves-effect">Add Namespace</a></p>
+	{% endif %}
+</main>
+{% endblock %}

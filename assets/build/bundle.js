@@ -1,54 +1,209 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _adminController = require('./adminController');
+var _admin = require('./admin.ui');
 
-var _editController = require('./editController');
+var _dashboard = require('./dashboard.view');
 
+var _namespace = require('./namespace.view');
+
+var _submissions = require('./submissions.view');
+
+var _submissions2 = require('./submissions.list');
+
+var _namespace2 = require('./namespace.add');
+
+// initialize UI
 /* global angular */
 
-var app = angular.module('AdminApp', ['jsonFormatter']);
+(0, _admin.initUI)();
 
-app.controller('AdminController', _adminController.AdminController);
-app.controller('EditController', _editController.EditController);
+var app = angular.module('AdminApp', ['jsonFormatter', 'googlechart']);
 
-},{"./adminController":2,"./editController":3}],2:[function(require,module,exports){
+app.controller('DashboardController', _dashboard.DashboardController);
+app.controller('ViewSubmissionController', _submissions.ViewSubmissionController);
+app.controller('ListSubmissionController', _submissions2.ListSubmissionController);
+app.controller('AddNamespaceController', _namespace2.AddNamespaceController);
+app.controller('ViewNamespaceController', _namespace.ViewNamespaceController);
+
+},{"./admin.ui":2,"./dashboard.view":3,"./namespace.add":4,"./namespace.view":5,"./submissions.list":6,"./submissions.view":7}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.initUI = initUI;
+/* Initialize Materialize UI */
+
+/* global $ */
+
+function initUI() {
+
+    // Initialize collapse button
+    $(".button-collapse").sideNav({
+        //edge: 'right'
+    });
+}
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.AdminController = AdminController;
-/* Admin controller */
+exports.DashboardController = DashboardController;
+/* DashboardController */
 
 /* global $ */
 /* global angular */
 /* global location */
 /* global vex */
 
-function AdminController($scope, $timeout) {
+function DashboardController($scope) {
+
 	console.log('in the dashboard');
 
-	$scope.delete = function (submission_key) {
+	$scope.submissions = [];
+	$scope.namespaceIDs = [];
+	$scope.formIDs = [];
+	$scope.namespaceSubmissions = {};
+
+	$scope.myChartObject = {
+		type: 'ColumnChart'
+	};
+
+	$.get('/_api/forms/').done(function (result) {
+		console.log(result);
+
+		$scope.submissions = result;
+
+		for (var i = 0; i < result.length; i++) {
+			var v_id = result[i]['namespaceID'];
+			console.log(v_id);
+
+			if ($scope.namespaceIDs.includes(v_id)) {
+				// increment counter
+				$scope.namespaceSubmissions[v_id] = $scope.namespaceSubmissions[v_id] + 1;
+			} else {
+				// add to list
+				$scope.namespaceIDs.push(v_id);
+				$scope.namespaceSubmissions[v_id] = 1;
+			}
+		}
+
+		//console.log($scope.namespaceSubmissions);
+
+		var rowData = [];
+
+		for (var i in $scope.namespaceSubmissions) {
+			var o = $scope.namespaceSubmissions[i];
+			rowData.push({
+				c: [{ v: i }, { v: o }]
+			});
+		}
+
+		// set up graph
+
+		$scope.myChartObject.data = {
+			"cols": [{ id: "t", label: "Namespace ID", type: "string" }, { id: "s", label: "Submissions", type: "number" }],
+			"rows": rowData
+		};
+	}).fail(function (result) {
+		console.log('Dashboard Error: Could not retrieve form submissions');
+	});
+}
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.AddNamespaceController = AddNamespaceController;
+/* AddNamespaceController */
+
+/* global $ */
+/* global angular */
+/* global location */
+/* global vex */
+
+function AddNamespaceController($scope) {
+
+	$scope.data = {
+		namespaceID: '',
+		description: ''
+	};
+
+	$scope.key = window.uQuery('key');
+
+	// submit namepsace data
+	$scope.submit = function () {
+
+		console.log($scope.data);
+
+		if ($scope.data.description == '' || $scope.data.namespaceID == '') {
+			vex.dialog.alert('Enter a value for all fields');
+			return;
+		}
+
+		$.post('/_api/namespace/save', $scope.data).done(function (result) {
+			console.log('The data was saved.');
+			console.log(result);
+			vex.dialog.alert({
+				'message': 'Namespace has been saved',
+				'callback': function callback() {
+					window.location = '/admin/namespace/';
+				}
+			});
+		}).fail(function (result) {
+			vex.dialog.alert({
+				'message': 'An error occurred: ' + result,
+				'callback': function callback() {
+					console.log('An error has occurred:');
+					console.log(result);
+				}
+			});
+		});
+
+		return;
+	};
+}
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ViewNamespaceController = ViewNamespaceController;
+/* View Namespace controller */
+
+/* global $ */
+/* global angular */
+/* global location */
+/* global vex */
+
+function ViewNamespaceController($scope, $timeout) {
+	console.log('viewing namespaces');
+
+	$scope.delete = function (namespace_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this contact',
+			message: 'Are you sure you want to delete this namespace',
 			callback: function callback(val) {
 				if (val) {
-					console.log('yes: ' + submission_key);
+					console.log('yes: ' + namespace_key);
 
 					var data = {
-						key: submission_key
+						key: namespace_key
 					};
 
-					$.post('/_api/v1/delete/', data).done(function (result) {
+					$.post('/_api/namespace/delete', data).done(function (result) {
 						console.log(result);
 						//location.href = location.href;
 						vex.dialog.alert({
-							message: 'Contact deleted. Refreshing page',
+							message: 'Namespace deleted.',
 							callback: function callback() {
-								$timeout(function () {
-									location.reload(true);
-								}, 300);
+								window.location = '/admin/namespace/';
 							}
 						});
 					}).fail(function (result) {
@@ -63,54 +218,70 @@ function AdminController($scope, $timeout) {
 	};
 }
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.EditController = EditController;
-/* Edit Controller */
+exports.ListSubmissionController = ListSubmissionController;
+/* ListSubmissionController */
 
 /* global $ */
 /* global angular */
 /* global location */
 /* global vex */
 
-function EditController($scope) {
+function ListSubmissionController($scope, $timeout) {
+	console.log('list form submissions');
+}
 
-	$scope.key = window.uQuery('key');
+},{}],7:[function(require,module,exports){
+'use strict';
 
-	// submit contact form
-	$scope.submit = function (e) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ViewSubmissionController = ViewSubmissionController;
+/* View Submission controller */
 
-		var formElement = angular.element(e.target);
+/* global $ */
+/* global angular */
+/* global location */
+/* global vex */
 
-		var data = {
-			data: $('#data').val(),
-			key: $scope.key
-		};
+function ViewSubmissionController($scope, $timeout) {
+	console.log('viewing form submissions');
 
-		$.post('/_api/v1/save/', data).done(function (result) {
-			console.log('The data was saved.');
-			console.log(result);
-			vex.dialog.alert({
-				'message': 'Submission has been saved',
-				'callback': function callback() {
-					location.href = '/admin/';
+	$scope.delete = function (submission_key) {
+		vex.dialog.confirm({
+			message: 'Are you sure you want to delete this submission',
+			callback: function callback(val) {
+				if (val) {
+					console.log('yes: ' + submission_key);
+
+					var data = {
+						key: submission_key
+					};
+
+					$.post('/_api/forms/delete', data).done(function (result) {
+						console.log(result);
+						//location.href = location.href;
+						vex.dialog.alert({
+							message: 'Submission deleted. Refreshing page',
+							callback: function callback() {
+								window.location = '/admin/forms/';
+							}
+						});
+					}).fail(function (result) {
+						console.log(result);
+						vex.dialog.alert('Could not delete item');
+					});
+				} else {
+					console.log('i see you do not want to delete this.');
 				}
-			});
-		}).fail(function (result) {
-			vex.dialog.alert({
-				'message': 'An error occurred: ' + result,
-				'callback': function callback() {
-					console.log('An error has occurred:');
-					console.log(result);
-				}
-			});
+			}
 		});
-
-		return;
 	};
 }
 

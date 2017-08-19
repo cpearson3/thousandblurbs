@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>Form Submissions</h1>
+</header>
+<main ng-controller="ListSubmissionController">
+	<p><a href="/_api/forms/export.csv" target="_blank" class="btn waves-light waves-effect">Export Submissions as CSV</a></p>
+	{% if data.submissions %}
+	<table class="table table-border scrollableX">
+		<thead class="h5">
+			<tr><td>Form ID</td><td>Namespace</td><td>Date/Time<td></tr>
+		</thead>
+		<tbody>
+		{% for submission in data.submissions %}
+		<tr>
+			<td>{{submission.formID}}</td>
+			<td>{{submission.namespaceID}}</td>
+			<td>{{ submission.datetime }}</td>
+			<td class="text-right">
+				<a href="/admin/forms/view?key={{ submission.key }}" class="btn">View</i></a> 
+				<!-- a href="/admin/edit?key={{ submission.key }}" class="btn"><i class="fa fa-pencil"></i></a --> 
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>No form submissions yet.</p>
+	{% endif %}
+</main>
+{% endblock %}

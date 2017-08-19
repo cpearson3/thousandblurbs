@@ -1,41 +1,20 @@
-# Thousandblurbs API v0.2.0
-
-# It is highly recommended that you set an API key per project
-THOUSANDBLURBS_API_KEY = "123456789"
-
-YOURNAME = ""
-SENDGRID_API_KEY = ""
-SENDGRID_SENDER = ""
-
 #  Import supporting libs
 from flask import Flask, render_template, url_for, request, Response, jsonify
 from wtforms import Form, StringField, TextAreaField, validators
 
 import json
-
 import logging
 
-# import services and models
+# import project modules
+from .. import config
 from .. import services
 from .. import models
 
-# Flask app app instance
-app = Flask(__name__)
-app.debug = True
-
-@app.after_request
-def after_request(response):
-	response.headers.add('Access-Control-Allow-Origin', '*')
-	response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-	response.headers.add('Access-Control-Allow-Methods', '*')
-	return response
-
 # Get Submissions
-@app.route('/_api/v1/submissions/')
-def getSubmissions():
+def getSubmission():
 
 	# TODO: Better logging
-	logging.warning('API Call: getSubmissions')
+	logging.warning('FormsAPI Call: getSubmission')
 
 	# get objects
 	data = services.FormService.GetAll()
@@ -56,20 +35,19 @@ def getSubmissions():
 		return str(e)
 
 # Export Submissions
-@app.route('/_api/v1/submissions/export')
 def exportSubmissions():
 
-	logging.warning('API Call: exportSubmissions')
+	logging.warning('FormsAPI Call: exportSubmissions')
 	
 	# get objects
 	data = services.FormService.GetAll()
 
 	# Add header to CSV output
-	csv_output = 'Data, Datetime\n'
+	csv_output = 'Data, Namespace ID, Form ID, Datetime\n'
 
 	# Convert data to comma separated list
 	for i in data:
-		csv_output += ','.join([i['data'], i['formID'], i['datetime']]) + '\n'
+		csv_output += ','.join([i['data'], i['namespaceID'], i['formID'], i['datetime']]) + '\n'
 
 	try:
 		return Response(csv_output, mimetype="text/csv")
@@ -84,27 +62,24 @@ class SubmissionForm(Form):
 	formID = StringField('formID')
 	apiKey = StringField('apiKey')
 
-@app.route('/_api/v1/save/', methods = ['POST'])
 def saveSubmission():
 	
 	data = {}
 	form = SubmissionForm(request.form)
 
-	logging.warning('API Call: saveSubmission')
-	
-	
+	logging.warning('FormsAPI Call: saveSubmission')
 
 	# validate form submission
 	if form.validate():
 		# FORM DATA IS VALID
 		
-		# 0.2.0
-		# check API key
-		if THOUSANDBLURBS_API_KEY:
+		# 0.2.0 - check API key
+		# 0.3.0 - API key defined in config module
+		if config.API_KEY:
 			logging.warning('testing api key')
 			key = request.form.get('apiKey')
 			
-			if key != THOUSANDBLURBS_API_KEY:
+			if key != config.API_KEY:
 
 				# return response object with error status code
 				resp = jsonify({
@@ -120,6 +95,7 @@ def saveSubmission():
 		data = {
 			'data': {},
 			'formID': request.form.get('formID'),
+			'namespaceID': request.form.get('namespaceID'),
 			'key': request.form.get('key')
 		}
 		
@@ -173,10 +149,9 @@ def saveSubmission():
 		return resp
 
 # delete
-@app.route('/_api/v1/delete/', methods = ['POST'])
 def deleteSubmission():
 	
-	logging.warning('API Call: deleteSubmission')
+	logging.warning('FormsAPI Call: deleteSubmission')
 
 	# get key
 	try:
@@ -218,10 +193,9 @@ def deleteSubmission():
 		return resp
 
 # save list of submissions
-@app.route('/_api/v1/save/list', methods = ['POST'])
-def saveList():
+def saveSubmissions():
 	
-	logging.warning('API Call: saveList')
+	logging.warning('FormsAPI Call: saveSubmissions')
 
 	# GET and CONVERT data
 	try:

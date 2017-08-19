@@ -1,32 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="container">
-	<article class="block">
-		<section class="block text-center">
-			<img class="img" src="/assets/images/thousand.png" alt="Thousandblurbs">
-			<h1>A Google App Engine + Flask Web Application Starter Kit</h1>
-			<p><small>VERSION 0.2.0</small></p>
-			<a href="http://github.com/cpearson3/thousandblurbs" class="btn"><i class="fa fa-document"></i> View Docs</a>
-		</section>
-		
-		<h2>What is Thousandblurbs?</h2>
-		<p>Thousandblurbs is a web application starter kit built for the cloud using Google App Engine, <a href="http://flask.pocoo.org/" target="_blank">Flask</a>, and Bootsmooth.</p>
-
-		<h2>What kind of web applications can you build with Thousandblurbs?</h2>
-		<ol>
-			<li>Small, fast websites and landing pages with free hosting quota*</li>
-			<li>Form collection with administrative interface</li>
-			<li>Backend micro services and data collection API for mobile apps</li>
-			<li>Complete, full-stack web applications</li>
-		</ol>
-		<small>* Google App Engine offers a free usage tier (as of Jan 2017)</small>
-		<h3>Features include:</h3>
-		<ul>
-			<li>Sass-based stylesheet built with <a href="https://bootsmooth.com" target="_blank">Bootsmooth</a></li>
-			<li>Customizable <a href="http://jinja.pocoo.org/docs/2.9/" target="_blank">Jinja2 templates</a> for web pages and admin dashboard</li>
-			<li>Form capture service and maintenance using <a href="https://cloud.google.com/datastore/docs/">Google Cloud Datastore</a></li>
-		</ul>
-		<a href="http://github.com/cpearson3/thousandblurbs" class="btn"><i class="fa fa-document"></i> View Docs</a>
-	</article>
+<header>
+	<div class="container">
+		<h1>Thousandblurbs</h1>
+		<h2>{{data.context.description}}</h2>
+	</div>
+</header>
+<section class="bg">
+<div class="container" style="max-width: 600px; padding: 25px 0">
+	<div class="card hoverable">
+		<div class="card-content">
+			<span class="card-title">Login with your Google Account</span>
+			<p>You must have <em>administrative rights</em> in order to access this application.</p>
+		</div>
+		<div class="card-action">
+			<a href="/admin/">Login <i class="fa fa-sign-in"></i></a>
+			<a href="/about/">What is Thousandblurbs <i class="fa fa-question"></i></a>
+		</div>
+	</div>
+</div>
 </section>
 {% endblock %}

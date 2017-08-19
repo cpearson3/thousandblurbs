@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>Settings</h1>
+</header>
+<main>
+<ul class="collection">
+	<li class="collection-item">
+		<div class="row">
+			<div class="col s12 m4">
+				<h5>Instance Title</h5>
+			</div>
+			<div class="col s12 m8">
+				<p>{{data.context.title}}</p>
+			</div>
+		</div>
+	</li>
+	<li class="collection-item">
+		<div class="row">
+			<div class="col s12 m4">
+				<h5>Instance Description</h5>
+			</div>
+			<div class="col s12 m8">
+				<p>{{data.context.description}}</p>
+			</div>
+		</div>
+	</li>
+	<li class="collection-item">
+		<div class="row">
+			<div class="col s12 m4">
+				<h5>API Key</h5>
+			</div>
+			<div class="col s12 m8">
+				<p>{{data.context.api_key}}</p>
+			</div>
+		</div>
+	</li>
+	<li class="collection-item">
+		<div class="row">
+			<div class="col s12 m4">
+				<h5>Allowed Domains</h5>
+			</div>
+			<div class="col s12 m8">
+				<p>{{data.context.allowed_domains}}</p>
+			</div>
+		</div>
+	</li>
+	<li class="collection-item">
+		<div class="row">
+			<div class="col s12 m4">
+				<h5>Version</h5>
+			</div>
+			<div class="col s12 m8">
+				<p>{{data.context.app_version}}</p>
+			</div>
+		</div>
+	</li>
+</ul>
+
+</main>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>View Namespace</h1>
+</header>
+<main ng-controller="ViewNamespaceController">
+<h3>Namespace ID: {{data.namespaceID}}</h3>
+<ul class="collection">
+	<li class="collection-item">
+		<h5>Date Submitted: {{data.datetime}}</h5>
+	</li>
+	<li class="collection-item">
+		<h5>Description</h5>
+		<p>
+		    {{data.description}}
+		</p>
+	</li>
+</ul>
+<a class="btn" ng-click="delete('{{ data.key }}')">Delete Namespace <i class="fa fa-trash-o"></i></a>
+	
+</main>
+{% endblock %}
