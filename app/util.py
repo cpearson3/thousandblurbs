@@ -17,7 +17,8 @@ def initPageData():
 	
 	# get current user
 	user = users.get_current_user()
-	context['user_email'] = user.email()
+	if user:
+		context['user_email'] = user.email()
 	
 	return {
 		'context': context
