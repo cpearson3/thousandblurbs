@@ -10,7 +10,7 @@ export function ViewNamespaceController($scope, $timeout) {
 
 	$scope.delete = function(namespace_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this namespace',
+			message: 'Are you sure you want to delete this namespace?',
 			callback: function(val) {
 				if (val) {
 					console.log('yes: ' + namespace_key);

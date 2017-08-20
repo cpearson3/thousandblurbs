@@ -13,6 +13,7 @@ export function DashboardController($scope) {
 	$scope.namespaceIDs = [];
 	$scope.formIDs = [];
 	$scope.namespaceSubmissions = {};
+	$scope.noSubmissions = false;
 	
 	$scope.myChartObject = {
 		type: 'ColumnChart'
@@ -22,45 +23,50 @@ export function DashboardController($scope) {
 	.done(function(result) {
 		console.log(result);
 		
-		$scope.submissions = result;
-		
-		for (var i=0;i<result.length;i++) {
-			var v_id = result[i]['namespaceID'];
-			console.log(v_id)
+		if (result.length > 0) {
+			$scope.submissions = result;
 			
-			if ($scope.namespaceIDs.includes(v_id)) {
-				// increment counter
-				$scope.namespaceSubmissions[v_id] = $scope.namespaceSubmissions[v_id] + 1;
-			} else {
-				// add to list
-				$scope.namespaceIDs.push(v_id);
-				$scope.namespaceSubmissions[v_id] = 1;
+			$('#chart-container').show();
+			
+			for (var i=0;i<result.length;i++) {
+				var v_id = result[i]['namespaceID'];
+				console.log(v_id)
+				
+				if ($scope.namespaceIDs.includes(v_id)) {
+					// increment counter
+					$scope.namespaceSubmissions[v_id] = $scope.namespaceSubmissions[v_id] + 1;
+				} else {
+					// add to list
+					$scope.namespaceIDs.push(v_id);
+					$scope.namespaceSubmissions[v_id] = 1;
+				}
 			}
+			
+			// set up row data array
+			var rowData = [];
+			
+			for (var i in $scope.namespaceSubmissions) {
+				var o = $scope.namespaceSubmissions[i];
+				rowData.push({
+					c: [
+						{v: i},
+						{v: o}
+					]
+				});
+			}
+			
+			// set up chart
+			$scope.myChartObject.data = {
+				"cols": [
+				    {id: "t", label: "Namespace ID", type: "string"},
+				    {id: "s", label: "Submissions", type: "number"}
+				],
+				"rows": rowData
+			};
+		
+		} else {
+			$('#no-chart-data').show();
 		}
-		
-		//console.log($scope.namespaceSubmissions);
-		
-		var rowData = [];
-		
-		for (var i in $scope.namespaceSubmissions) {
-			var o = $scope.namespaceSubmissions[i];
-			rowData.push({
-				c: [
-					{v: i},
-					{v: o}
-				]
-			});
-		}
-		
-		// set up graph
-		
-		$scope.myChartObject.data = {
-			"cols": [
-			    {id: "t", label: "Namespace ID", type: "string"},
-			    {id: "s", label: "Submissions", type: "number"}
-			],
-			"rows": rowData
-		};
 		
 	})
 	.fail(function(result){

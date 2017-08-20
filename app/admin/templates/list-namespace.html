@@ -4,8 +4,8 @@
 	<h1>Namespaces</h1>
 </header>
 <main>
-	{% if data.namespaces %}
 	<p><a href="/admin/namespace/add" class="btn waves-light waves-effect">Add Namespace</a></p>
+	{% if data.namespaces %}
 	<table class="table table-border scrollableX">
 		<thead class="h5">
 			<tr><td>Namespace ID</td><td>Description</td><td>Date/Time<td></tr>
@@ -25,7 +25,6 @@
 	</table>
 	{% else %}
 	<p>No namespaces have been created yet.</p>
-	<p><a href="/admin/namespace/add" class="btn waves-light waves-effect">Add Namespace</a></p>
 	{% endif %}
 </main>
 {% endblock %}

@@ -18,6 +18,7 @@ from forms import *
 # Flask app app instance
 app = Flask(__name__)
 
+
 # Admin Dashboard controller
 @app.route('/admin/')
 def IndexController():

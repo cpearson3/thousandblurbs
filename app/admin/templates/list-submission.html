@@ -4,7 +4,7 @@
 	<h1>Form Submissions</h1>
 </header>
 <main ng-controller="ListSubmissionController">
-	<p><a href="/_api/forms/export.csv" target="_blank" class="btn waves-light waves-effect">Export Submissions as CSV</a></p>
+	<p><a href="/_api/forms/export.csv?apiKey={{data.context.api_key}}" target="_blank" class="btn waves-light waves-effect">Export Submissions as CSV</a></p>
 	{% if data.submissions %}
 	<table class="table table-border scrollableX">
 		<thead class="h5">
@@ -18,7 +18,6 @@
 			<td>{{ submission.datetime }}</td>
 			<td class="text-right">
 				<a href="/admin/forms/view?key={{ submission.key }}" class="btn">View</i></a> 
-				<!-- a href="/admin/edit?key={{ submission.key }}" class="btn"><i class="fa fa-pencil"></i></a --> 
 			</td>
 		</tr>
 		{% endfor %}

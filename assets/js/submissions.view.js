@@ -10,7 +10,7 @@ export function ViewSubmissionController($scope, $timeout) {
 
 	$scope.delete = function(submission_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this submission',
+			message: 'Are you sure you want to delete this submission?',
 			callback: function(val) {
 				if (val) {
 					console.log('yes: ' + submission_key);
@@ -24,7 +24,7 @@ export function ViewSubmissionController($scope, $timeout) {
 						console.log(result);
 						//location.href = location.href;
 						vex.dialog.alert({
-							message:'Submission deleted. Refreshing page',
+							message:'Form Submission deleted.',
 							callback: function() {
 								window.location = '/admin/forms/';
 							}

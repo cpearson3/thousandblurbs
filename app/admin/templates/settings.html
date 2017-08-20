@@ -4,6 +4,8 @@
 	<h1>Settings</h1>
 </header>
 <main>
+
+<p>Instance settings are set in the <strong><code>app/config.py</code></strong> file.</p>
 <ul class="collection">
 	<li class="collection-item">
 		<div class="row">
@@ -31,7 +33,11 @@
 				<h5>API Key</h5>
 			</div>
 			<div class="col s12 m8">
+				{% if data.context.api_key %}
 				<p>{{data.context.api_key}}</p>
+				{% else %}
+				<p>No API Key has been set.</p>
+				{% endif %}
 			</div>
 		</div>
 	</li>

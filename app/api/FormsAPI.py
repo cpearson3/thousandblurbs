@@ -59,7 +59,7 @@ def exportSubmissions():
 # Submission Form 
 # - Form ID is required
 class SubmissionForm(Form):
-	formID = StringField('formID')
+	formID = StringField('formID', [validators.Required(), validators.length(max=50)])
 	apiKey = StringField('apiKey')
 
 def saveSubmission():
@@ -75,22 +75,6 @@ def saveSubmission():
 		
 		# 0.2.0 - check API key
 		# 0.3.0 - API key defined in config module
-		if config.API_KEY:
-			logging.warning('testing api key')
-			key = request.form.get('apiKey')
-			
-			if key != config.API_KEY:
-
-				# return response object with error status code
-				resp = jsonify({
-					'status': 400,
-					'error': 'API key did not validate'
-				})
-		
-				resp.status_code = 400
-				return resp
-			else:
-				pass
 
 		data = {
 			'data': {},
@@ -119,7 +103,7 @@ def saveSubmission():
 				# error save data
 				resp = jsonify({
 					'status': 400,
-					'error': 'Could not save contact'
+					'error': 'Could not save form submission'
 				})
 
 				resp.status_code = 400

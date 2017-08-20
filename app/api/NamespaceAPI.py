@@ -53,23 +53,6 @@ def saveNamespace():
 	# validate form Namespace
 	if form.validate():
 
-		if config.API_KEY:
-			logging.warning('testing api key')
-			key = request.form.get('apiKey')
-			
-			if key != config.API_KEY:
-
-				# return response object with error status code
-				resp = jsonify({
-					'status': 400,
-					'error': 'API key did not validate'
-				})
-		
-				resp.status_code = 400
-				return resp
-			else:
-				pass
-
 		data = {
 			'data': {},
 			'namespaceID': request.form.get('namespaceID'),
@@ -164,3 +147,21 @@ def deleteNamespace():
 		})
 
 		return resp
+		
+def f():
+	if config.API_KEY:
+		logging.warning('testing api key')
+		key = request.form.get('apiKey')
+		
+		if key != config.API_KEY:
+
+			# return response object with error status code
+			resp = jsonify({
+				'status': 400,
+				'error': 'API key did not validate'
+			})
+	
+			resp.status_code = 400
+			return resp
+		else:
+			pass

@@ -9,8 +9,6 @@ from google.appengine.api import users
 # Flask app app instance
 app = Flask(__name__)
 
-# thousandblurbs 0.1.0
-
 # 301 Redirect *.appspot.com requests to custom domain if set
 @app.before_request
 def AppspotRedirect():

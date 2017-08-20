@@ -67,6 +67,7 @@ function DashboardController($scope) {
 	$scope.namespaceIDs = [];
 	$scope.formIDs = [];
 	$scope.namespaceSubmissions = {};
+	$scope.noSubmissions = false;
 
 	$scope.myChartObject = {
 		type: 'ColumnChart'
@@ -75,39 +76,43 @@ function DashboardController($scope) {
 	$.get('/_api/forms/').done(function (result) {
 		console.log(result);
 
-		$scope.submissions = result;
+		if (result.length > 0) {
+			$scope.submissions = result;
 
-		for (var i = 0; i < result.length; i++) {
-			var v_id = result[i]['namespaceID'];
-			console.log(v_id);
+			$('#chart-container').show();
 
-			if ($scope.namespaceIDs.includes(v_id)) {
-				// increment counter
-				$scope.namespaceSubmissions[v_id] = $scope.namespaceSubmissions[v_id] + 1;
-			} else {
-				// add to list
-				$scope.namespaceIDs.push(v_id);
-				$scope.namespaceSubmissions[v_id] = 1;
+			for (var i = 0; i < result.length; i++) {
+				var v_id = result[i]['namespaceID'];
+				console.log(v_id);
+
+				if ($scope.namespaceIDs.includes(v_id)) {
+					// increment counter
+					$scope.namespaceSubmissions[v_id] = $scope.namespaceSubmissions[v_id] + 1;
+				} else {
+					// add to list
+					$scope.namespaceIDs.push(v_id);
+					$scope.namespaceSubmissions[v_id] = 1;
+				}
 			}
+
+			// set up row data array
+			var rowData = [];
+
+			for (var i in $scope.namespaceSubmissions) {
+				var o = $scope.namespaceSubmissions[i];
+				rowData.push({
+					c: [{ v: i }, { v: o }]
+				});
+			}
+
+			// set up chart
+			$scope.myChartObject.data = {
+				"cols": [{ id: "t", label: "Namespace ID", type: "string" }, { id: "s", label: "Submissions", type: "number" }],
+				"rows": rowData
+			};
+		} else {
+			$('#no-chart-data').show();
 		}
-
-		//console.log($scope.namespaceSubmissions);
-
-		var rowData = [];
-
-		for (var i in $scope.namespaceSubmissions) {
-			var o = $scope.namespaceSubmissions[i];
-			rowData.push({
-				c: [{ v: i }, { v: o }]
-			});
-		}
-
-		// set up graph
-
-		$scope.myChartObject.data = {
-			"cols": [{ id: "t", label: "Namespace ID", type: "string" }, { id: "s", label: "Submissions", type: "number" }],
-			"rows": rowData
-		};
 	}).fail(function (result) {
 		console.log('Dashboard Error: Could not retrieve form submissions');
 	});
@@ -188,7 +193,7 @@ function ViewNamespaceController($scope, $timeout) {
 
 	$scope.delete = function (namespace_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this namespace',
+			message: 'Are you sure you want to delete this namespace?',
 			callback: function callback(val) {
 				if (val) {
 					console.log('yes: ' + namespace_key);
@@ -255,7 +260,7 @@ function ViewSubmissionController($scope, $timeout) {
 
 	$scope.delete = function (submission_key) {
 		vex.dialog.confirm({
-			message: 'Are you sure you want to delete this submission',
+			message: 'Are you sure you want to delete this submission?',
 			callback: function callback(val) {
 				if (val) {
 					console.log('yes: ' + submission_key);
@@ -268,7 +273,7 @@ function ViewSubmissionController($scope, $timeout) {
 						console.log(result);
 						//location.href = location.href;
 						vex.dialog.alert({
-							message: 'Submission deleted. Refreshing page',
+							message: 'Form Submission deleted.',
 							callback: function callback() {
 								window.location = '/admin/forms/';
 							}

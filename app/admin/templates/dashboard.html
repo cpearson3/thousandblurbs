@@ -4,8 +4,11 @@
 	<h1>Thousandblurbs Dashboard</h1>
 </header>
 <main ng-controller="DashboardController">
+<div id="chart-container" style="display:none">
 <h5>Form Submissions by Namespace</h5>
 <div google-chart chart="myChartObject" style="height:450px; width:100%;" class="z-depth-1"></div>
+</div>
+<h5 id="no-chart-data" style="display:none">No form submission data has been collected.</h5>
 <br>
 <h5>Manage Your Instance</h5>
 <div class="row">

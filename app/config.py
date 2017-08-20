@@ -6,8 +6,8 @@ API_KEY = ""
 ALLOWED_DOMAINS = '*'
 
 APP_VERSION = "0.3.0"
-SITE_TITLE = "Serve Dynamic Web Components with Thousandblurbs"
-SITE_DESCRIPTION = "Your web data backend on Google App Engine."
+SITE_TITLE = "Thousandblurbs"
+SITE_DESCRIPTION = "Manage form data retrieval using Google App Engine."
 NAV_TITLE = "Thousandblurbs"
 
 # Domain information
