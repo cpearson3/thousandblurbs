@@ -11,6 +11,8 @@ Thousandblurbs is a web application starter kit built for the cloud using Google
 
 ## Changelog
 
+### 0.3.2
+
 ### 0.3.1
 * Client IP address is now stored for all form submissions
 * Added fixed action button to Admin UI

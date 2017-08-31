@@ -1,6 +1,6 @@
 {
   "name": "thousandblurbs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Google App Engine + Flask Web Project Starter Kit",
   "main": "app.yaml",
   "scripts": {
