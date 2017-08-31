@@ -14,4 +14,5 @@ class FormSubmission(ndb.Model):
 	formID = ndb.StringProperty()
 	namespaceID = ndb.StringProperty()
 	data = ndb.TextProperty()
+	clientIP = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)

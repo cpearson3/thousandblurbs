@@ -68,6 +68,7 @@ def saveSubmission():
 	form = SubmissionForm(request.form)
 
 	logging.warning('FormsAPI Call: saveSubmission')
+	logging.warning('Referrer: ' + request.remote_addr)
 
 	# validate form submission
 	if form.validate():
@@ -80,7 +81,8 @@ def saveSubmission():
 			'data': {},
 			'formID': request.form.get('formID'),
 			'namespaceID': request.form.get('namespaceID'),
-			'key': request.form.get('key')
+			'key': request.form.get('key'),
+			'clientIP': request.remote_addr
 		}
 		
 		for i in request.form.keys():

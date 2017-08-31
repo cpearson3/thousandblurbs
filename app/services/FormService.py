@@ -24,7 +24,8 @@ def GetAll():
 				'data': i.data,
 				'formID': i.formID,
 				'namespaceID': i.namespaceID,
-				'datetime': str(i.datetime)
+				'datetime': str(i.datetime),
+				'clientIP': i.clientIP
 			}
 			result.append(obj)
 
@@ -47,6 +48,7 @@ def Get(key):
 			'formID': i.formID,
 			'namespaceID': i.namespaceID,
 			'datetime': str(i.datetime),
+			'clientIP': i.clientIP
 		}
 
 		return result
@@ -100,6 +102,7 @@ def Save(data):
 		newObj.data = json.dumps(data['data'])
 		newObj.formID = data['formID']
 		newObj.namespaceID = data['namespaceID']
+		newObj.clientIP = data['clientIP']
 		newObj.put()
 
 		logging.warning('FormService.Save SUCCESS')

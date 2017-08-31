@@ -16,7 +16,15 @@
 		</p>
 	</li>
 </ul>
-<a class="btn" ng-click="delete('{{ data.key }}')">Delete Namespace <i class="fa fa-trash-o"></i></a>
-	
+<!-- a class="btn" ng-click="delete('{{ data.key }}')">Delete Namespace <i class="fa fa-trash-o"></i></a -->
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large">
+		<i class="fa fa-gear"></i>
+	</a>
+	<ul>
+		<li><a ng-click="delete('{{ data.key }}')" class="btn-floating" title="Delete Namespace"><i class="fa fa-trash"></i></a></li>
+	</ul>
+</div>
 </main>
+
 {% endblock %}

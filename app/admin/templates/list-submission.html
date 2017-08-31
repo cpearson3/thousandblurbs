@@ -4,7 +4,6 @@
 	<h1>Form Submissions</h1>
 </header>
 <main ng-controller="ListSubmissionController">
-	<p><a href="/_api/forms/export.csv?apiKey={{data.context.api_key}}" target="_blank" class="btn waves-light waves-effect">Export Submissions as CSV</a></p>
 	{% if data.submissions %}
 	<table class="table table-border scrollableX">
 		<thead class="h5">
@@ -27,4 +26,12 @@
 	<p>No form submissions yet.</p>
 	{% endif %}
 </main>
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large">
+		<i class="fa fa-gear"></i>
+	</a>
+	<ul>
+		<li><a href="/_api/forms/export.csv?apiKey={{data.context.api_key}}" target="_blank" class="btn-floating" title="Export Form Submissions"><i class="fa fa-download"></i></a></li>
+	</ul>
+</div>
 {% endblock %}

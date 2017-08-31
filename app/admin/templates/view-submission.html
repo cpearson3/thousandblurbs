@@ -16,8 +16,18 @@
 		<h5>Form Data</h5>
 		<json-formatter open="1" json="{{data.data}}"></json-formatter>
 	</li>
+	<li class="collection-item">
+		<h5>Client IP Address: {{data.clientIP}}</h5>
+	</li>
 </ul>
-<a class="btn" ng-click="delete('{{ data.key }}')">Delete Submission <i class="fa fa-trash-o"></i></a>
-	
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large">
+		<i class="fa fa-gear"></i>
+	</a>
+	<ul>
+		<li><a ng-click="delete('{{ data.key }}')" target="_blank" class="btn-floating" title="Delete Submission"><i class="fa fa-trash-o"></i></a></li>
+	</ul>
+</div>
 </main>
+
 {% endblock %}
