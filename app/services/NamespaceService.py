@@ -15,12 +15,12 @@ def GetAll():
 		result = []
 		# get all, order by datetime
 		query = models.Namespace.query().order(-models.Namespace.datetime)
-		for i in query.iter():
+		for namespace in query.iter():
 			obj = {
-				'key': i.key.urlsafe(),
-				'description': i.description,
-				'namespaceID': i.namespaceID,
-				'datetime': str(i.datetime)
+				'key': namespace.key.urlsafe(),
+				'description': namespace.description,
+				'namespaceID': namespace.namespaceID,
+				'datetime': str(namespace.datetime)
 			}
 			result.append(obj)
 
@@ -39,8 +39,8 @@ def GetAllIDs():
 		# get all, order by datetime
 		query = models.Namespace.query()
 		
-		for i in query.iter():
-			result.append(str(i.namespaceID))
+		for namespace in query.iter():
+			result.append(str(namespace.namespaceID))
 
 		return result
 
@@ -50,17 +50,30 @@ def GetAllIDs():
 		return None
 
 # get by key
-def Get(key):
+def Get(key=None, namespaceID=None):
 
+	namespace = None
 	try:
-		# get by key
-		i =  ndb.Key(urlsafe=key).get()
+		if key: 
+			# get by key
+			namespace =  ndb.Key(urlsafe=key).get()
+			
+		else:
+			if namespaceID:
+				query = models.Namespace.query(models.Namespace.namespaceID == namespaceID).order(models.Namespace.datetime)
+				# get last result from query
+				for obj in query.iter():
+					namespace = obj
+			else:
+				# required arguments not passed
+				return None
+			
 		result = {
-			'key': i.key.urlsafe(),
-			'description': i.description,
-			'namespaceID': i.namespaceID,
-			'datetime': str(i.datetime),
-		}
+				'key': namespace.key.urlsafe(),
+				'description': namespace.description,
+				'namespaceID': namespace.namespaceID,
+				'datetime': str(namespace.datetime),
+			}
 
 		return result
 
@@ -107,9 +120,9 @@ def Save(data):
 def Delete(key):
 	try:
 		# get by key
-		i =  ndb.Key(urlsafe=key).get()
+		namespace =  ndb.Key(urlsafe=key).get()
 		
-		i.key.delete()
+		namespace.key.delete()
 		
 		return True
 

@@ -1,4 +1,6 @@
 #  Import supporting libs
+
+from google.appengine.api import taskqueue
 from flask import Flask, render_template, url_for, request, Response, jsonify
 from wtforms import Form, StringField, TextAreaField, validators
 
@@ -43,11 +45,11 @@ def exportSubmissions():
 	data = services.FormService.GetAll()
 
 	# Add header to CSV output
-	csv_output = 'Data, Namespace ID, Form ID, Datetime\n'
+	csv_output = 'Data, Namespace ID, Form ID, Datetime, Client IP Address\n'
 
 	# Convert data to comma separated list
 	for i in data:
-		csv_output += ','.join([i['data'], i['namespaceID'], i['formID'], i['datetime']]) + '\n'
+		csv_output += ','.join([i['data'], i['namespaceID'], i['formID'], i['datetime'],i['clientIP']]) + '\n'
 
 	try:
 		return Response(csv_output, mimetype="text/csv")
@@ -60,7 +62,50 @@ def exportSubmissions():
 # - Form ID is required
 class SubmissionForm(Form):
 	formID = StringField('formID', [validators.Required(), validators.length(max=50)])
+	namespaceID = StringField('namespaceID', [validators.Required(), validators.length(max=50)])
 	apiKey = StringField('apiKey')
+	
+def Test():
+	form = SubmissionForm(request.form)
+
+	logging.warning('FormsAPI Call: saveSubmission')
+	logging.warning('Referrer: ' + request.remote_addr)
+
+	# validate form submission
+	if form.validate():
+		# FORM DATA IS VALID
+		
+		# 0.2.0 - check API key
+		# 0.3.0 - API key defined in config module
+
+		data = {
+			'data': {},
+			'formID': request.form.get('formID'),
+			'namespaceID': request.form.get('namespaceID'),
+			'key': request.form.get('key'),
+			'clientIP': request.remote_addr
+		}
+		taskqueue.add(
+			url='/_tasks/email/notification',
+			payload=str(data)
+		)
+		
+		resp = jsonify({
+			'status': 200,
+			'data': str(data)
+		})
+	
+		resp.status_code = 400
+		return resp	
+		
+	else:
+		resp = jsonify({
+			'status': 400,
+			'error': 'Could not validate form data'
+		})
+	
+		resp.status_code = 400
+		return resp	 
 
 def saveSubmission():
 	
@@ -92,28 +137,13 @@ def saveSubmission():
 
 		# update submission
 		try:
-			if services.FormService.Save(data):
-				
-				# success
-				resp = jsonify({
-					'status': 200,
-					'message': 'Successful save'
-				})
-
-				return resp
-			else:
-				# error save data
-				resp = jsonify({
-					'status': 400,
-					'error': 'Could not save form submission'
-				})
-
-				resp.status_code = 400
-				return resp	
-
+			services.FormService.Save(data)
 		except Exception as e:
 			# Oh no, something went wrong
 			# return response object with error status code
+			
+			logging.warning('Exception occured: ' + str(e))
+			
 			resp = jsonify({
 				'status': 400,
 				'error': str(e)
@@ -121,6 +151,38 @@ def saveSubmission():
 
 			resp.status_code = 400
 			return resp	
+			
+		
+		# success, trigger notification task
+		try:
+			logging.warning('Trigger Email Notification Task')
+			taskqueue.add(
+				url='/_tasks/email/notification',
+				target='worker',
+				payload=str(data)
+			)
+
+		except Exception as e:
+			# Oh no, something went wrong
+			# return response object with error status code
+			
+			logging.warning('Exception occured: ' + str(e))
+			
+			resp = jsonify({
+				'status': 400,
+				'error': str(e)
+			})
+
+			resp.status_code = 400
+			return resp	
+		
+		# success
+		resp = jsonify({
+			'status': 200,
+			'message': 'Successful save'
+		})
+
+		return resp
 	
 	else:
 		# FORM DATA IS INVALID

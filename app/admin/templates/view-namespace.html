@@ -4,7 +4,7 @@
 	<h1>View Namespace</h1>
 </header>
 <main ng-controller="ViewNamespaceController">
-<h3>Namespace ID: {{data.namespaceID}}</h3>
+<p class="controller-detail">Namespace ID: {{data.namespaceID}} <a class="btn waves-effect waves-light" title="View Namespace" href="/admin/forms/?namespaceID={{data.namespaceID | urlencode}}">View Submissions for Namespace</a></p>
 <ul class="collection">
 	<li class="collection-item">
 		<h5>Date Submitted: {{data.datetime}}</h5>

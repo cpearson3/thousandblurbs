@@ -12,7 +12,7 @@
 		<tbody>
 		{% for namespace in data.namespaces %}
 		<tr>
-			<td>{{namespace.namespaceID}}</td>
+			<td><a title="View Submissions" href="/admin/forms/?namespaceID={{namespace.namespaceID | urlencode }}">{{namespace.namespaceID}}</a></td>
 			<td>{{namespace.description}}</td>
 			<td>{{ namespace.datetime }}</td>
 			<td class="text-right">

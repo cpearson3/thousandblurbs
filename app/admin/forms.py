@@ -14,10 +14,28 @@ from .. import services
 
 # List Forms controller
 def ListFormsController():
-	# get objects
-	submissions = services.FormService.GetAll()
+	logging.warning('ListFormsController:')
+	
+	formID = request.args.get('formID')
+	namespaceID = request.args.get('namespaceID')
+	submisssions = []
+	
+	# is formID passed
+	if formID:
+		logging.warning('FormID passed: ' + str(formID))
+		submissions = services.FormService.GetAll(formID=formID)
+	else:
+		# is namespaceID passed
+		if namespaceID:
+			logging.warning('NamespaceID passed: ' + str(namespaceID))
+			submissions = services.FormService.GetAll(namespaceID=namespaceID)
+		else:
+			# get all
+			submissions = services.FormService.GetAll()
 
 	data = util.initPageData()
+	data['formID'] = formID
+	data['namespaceID'] = namespaceID
 	data['submissions'] = submissions if submissions else []
 	
 	return render_template('list-submission.html', data=data)

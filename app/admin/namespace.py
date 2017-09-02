@@ -24,15 +24,25 @@ def ListNamespaceController():
 	
 # View Controller
 def ViewNamespaceController():
+    
     data = util.initPageData()
+    namespace = {}
     
     try:
         key = request.args.get('key')
+        namespaceID = request.args.get('namespaceID')
         
-        util.copyDict(data, services.NamespaceService.Get(key))
+        # is key passed
+        if key:
+            logging.warning('Key Passed: ' + str(key))
+            namespace = services.NamespaceService.Get(key=key)
+        else:
+            if namespaceID:
+                logging.warning('NamespaceID Passed: ' + str(namespaceID))
+                namespace = services.NamespaceService.Get(namespaceID=namespaceID)
         
-        logging.warning('got key')
-    
+        util.copyDict(data, namespace)
+
     except Exception as e:
     
         logging.warning('Error: ' + str(e))

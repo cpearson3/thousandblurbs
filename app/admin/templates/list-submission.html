@@ -4,6 +4,16 @@
 	<h1>Form Submissions</h1>
 </header>
 <main ng-controller="ListSubmissionController">
+	{% if data.formID %}
+	<p class="controller-detail">Viewing submissions for form ID: {{data.formID}}</p>
+	{% else %}
+	{% if data.namespaceID %}
+	<p class="controller-detail">Viewing submissions for namespace ID: {{data.namespaceID}} <a class="btn waves-effect waves-light" title="View Namespace" href="/admin/namespace/view?namespaceID={{data.namespaceID | urlencode}}">View Namespace Details</a></p>
+	{% else %}
+	<p class="controller-detail">Viewing all form submissions</p>
+	{% endif %}
+	{% endif %}
+	
 	{% if data.submissions %}
 	<table class="table table-border scrollableX">
 		<thead class="h5">
@@ -12,8 +22,8 @@
 		<tbody>
 		{% for submission in data.submissions %}
 		<tr>
-			<td>{{submission.formID}}</td>
-			<td>{{submission.namespaceID}}</td>
+			<td><a href="/admin/forms/?formID={{submission.formID | urlencode }}">{{submission.formID}}</a></td>
+			<td><a href="/admin/forms/?namespaceID={{submission.namespaceID | urlencode }}">{{submission.namespaceID}}</a></td>
 			<td>{{ submission.datetime }}</td>
 			<td class="text-right">
 				<a href="/admin/forms/view?key={{ submission.key }}" class="btn">View</i></a> 
@@ -25,8 +35,7 @@
 	{% else %}
 	<p>No form submissions yet.</p>
 	{% endif %}
-</main>
-<div class="fixed-action-btn">
+	<div class="fixed-action-btn">
 	<a class="btn-floating btn-large">
 		<i class="fa fa-gear"></i>
 	</a>
@@ -34,4 +43,6 @@
 		<li><a href="/_api/forms/export.csv?apiKey={{data.context.api_key}}" target="_blank" class="btn-floating" title="Export Form Submissions"><i class="fa fa-download"></i></a></li>
 	</ul>
 </div>
+</main>
+
 {% endblock %}
