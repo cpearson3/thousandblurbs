@@ -4,8 +4,10 @@
 
 API_KEY = ""
 ALLOWED_DOMAINS = '*'
+FROM_EMAIL = ''
 
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.3.2"
+
 SITE_TITLE = "Thousandblurbs"
 SITE_DESCRIPTION = "Manage form data retrieval using Google App Engine."
 NAV_TITLE = "Thousandblurbs"
@@ -17,6 +19,7 @@ CUSTOM_DOMAIN = ''
 
 # Global context for page templates
 SITE_CONTEXT = {
+	'from_email': FROM_EMAIL,
 	'api_key': API_KEY,
 	'allowed_domains': ALLOWED_DOMAINS,
 	'title': SITE_TITLE,

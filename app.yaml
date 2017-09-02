@@ -28,10 +28,6 @@ handlers:
 # api server
 - url: /_api/(.*)
   script: app.api.app
-  
-# tasks server
-- url: /_tasks/(.*)
-  script: app.tasks.app
 
 # admin server
 - url: /admin/.*

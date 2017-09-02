@@ -58,6 +58,3 @@ app.add_url_rule('/_api/forms/export.csv',  view_func=FormsAPI.exportSubmissions
 app.add_url_rule('/_api/namespace/', view_func=NamespaceAPI.getNamespaces)
 app.add_url_rule('/_api/namespace/save', view_func=NamespaceAPI.saveNamespace, methods=['POST'])
 app.add_url_rule('/_api/namespace/delete',  view_func=NamespaceAPI.deleteNamespace, methods=['POST'])
-
-# TEST URL RULE
-app.add_url_rule('/_api/test/', view_func=FormsAPI.Test, methods=['POST'])
