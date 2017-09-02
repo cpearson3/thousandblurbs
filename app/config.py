@@ -4,7 +4,7 @@
 
 API_KEY = ""
 ALLOWED_DOMAINS = '*'
-FROM_EMAIL = ''
+SEND_NOTIFICATIONS = False
 
 APP_VERSION = "0.3.2"
 
@@ -19,7 +19,6 @@ CUSTOM_DOMAIN = ''
 
 # Global context for page templates
 SITE_CONTEXT = {
-	'from_email': FROM_EMAIL,
 	'api_key': API_KEY,
 	'allowed_domains': ALLOWED_DOMAINS,
 	'title': SITE_TITLE,

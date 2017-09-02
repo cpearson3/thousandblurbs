@@ -111,9 +111,10 @@ def saveSubmission():
 			return resp	
 		
 		# success, trigger email notification
-	
-		logging.warning('Trigger Email Notification Task')
-		services.EmailService.sendNotification(data):
+		
+		if config.SEND_NOTIFICATIONS:
+			logging.warning('Trigger Email Notification Task')
+			services.EmailService.sendNotification(data):
 		
 		# success
 		resp = jsonify({
