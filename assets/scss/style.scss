@@ -141,6 +141,15 @@ body.login {
 
 }
 
+// controller detail
+.controller-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+// collection styles
 ul.collection {
     @extend .z-depth-1;
     

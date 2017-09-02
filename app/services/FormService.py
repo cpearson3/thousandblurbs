@@ -9,15 +9,32 @@ import NamespaceService
 import json
 import logging
 
-# Upload File Service
-# Get All Method
-
-def GetAll():
+def GetAll(formID = None, namespaceID = None):
+	"""
+	Get All Method
+	Args:
+	    formID (str): Form ID (optional)
+	Returns:
+	    list: List of dictionaries retrieved from Data Store. None otherwise
+	"""
+	
 	try:
 		# build result list
 		result = []
-		# get all, order by datetime
-		query = models.FormSubmission.query().order(-models.FormSubmission.datetime)
+		
+		query = None
+		
+		# is formID passed
+		if formID:
+			query = models.FormSubmission.query(models.FormSubmission.formID == formID).order(-models.FormSubmission.datetime)
+		else:
+			# is namespaceID passed
+			if namespaceID:
+				query = models.FormSubmission.query(models.FormSubmission.namespaceID == namespaceID).order(-models.FormSubmission.datetime)
+			else:
+				# get all, order by datetime
+				query = models.FormSubmission.query().order(-models.FormSubmission.datetime)
+		
 		for i in query.iter():
 			obj = {
 				'key': i.key.urlsafe(),
@@ -25,7 +42,7 @@ def GetAll():
 				'formID': i.formID,
 				'namespaceID': i.namespaceID,
 				'datetime': str(i.datetime),
-				'clientIP': i.clientIP
+				'clientIP': str(i.clientIP)
 			}
 			result.append(obj)
 

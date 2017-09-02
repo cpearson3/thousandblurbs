@@ -8,12 +8,13 @@ skip_files:
 - ^node_modules$
 
 libraries:
-
 - name: django
   version: "1.2"
 
-handlers:
+builtins:
+- deferred: on
 
+handlers:
 - url: /assets/
   static_dir: assets
 

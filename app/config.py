@@ -4,8 +4,10 @@
 
 API_KEY = ""
 ALLOWED_DOMAINS = '*'
+SEND_NOTIFICATIONS = False
 
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.3.2"
+
 SITE_TITLE = "Thousandblurbs"
 SITE_DESCRIPTION = "Manage form data retrieval using Google App Engine."
 NAV_TITLE = "Thousandblurbs"

@@ -1,13 +1,18 @@
-import logging
-from config import *
-from util import *
 #  Import supporting libs
 from flask import Flask, render_template, redirect, request
-
 from google.appengine.api import users
+
+import logging
+
+from config import *
+from util import *
+
+# simport tasks
 
 # Flask app app instance
 app = Flask(__name__)
+
+# tasks.addURLRules(app)
 
 # 301 Redirect *.appspot.com requests to custom domain if set
 @app.before_request

@@ -12,6 +12,9 @@ Thousandblurbs is a web application starter kit built for the cloud using Google
 ## Changelog
 
 ### 0.3.2
+* Form Submissions can be viewed by Namespace and by Form ID
+* Added navigational links between Namespace and Form Submission views
+* Admin UI improvements
 
 ### 0.3.1
 * Client IP address is now stored for all form submissions
