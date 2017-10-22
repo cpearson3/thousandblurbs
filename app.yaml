@@ -5,6 +5,7 @@ api_version: 1
 threadsafe: no
 
 skip_files:
+- .git/
 - ^node_modules$
 
 libraries:

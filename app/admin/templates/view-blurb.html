@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>View Blurbs</h1>
+</header>
+<main ng-controller="ViewBlurbsController">
+<p class="controller-detail">Blurbs ID: {{data.blurbID}} <a class="btn waves-effect waves-light" title="View Blurbs" href="/admin/blurbs/?namespaceID={{data.namespaceID | urlencode}}">View Blurbs for Namespace</a></p>
+<ul class="collection">
+	<li class="collection-item">
+		<h5>Date Submitted: {{data.datetime}}</h5>
+	</li>
+	<li class="collection-item">
+		<h5>Content</h5>
+		<p>
+		    {{data.content}}
+		</p>
+	</li>
+</ul>
+<!-- a class="btn" ng-click="delete('{{ data.key }}')">Delete Blurbs <i class="fa fa-trash-o"></i></a -->
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large">
+		<i class="fa fa-gear"></i>
+	</a>
+	<ul>
+		<li><a ng-click="delete('{{ data.key }}')" class="btn-floating" title="Delete Blurbs"><i class="fa fa-trash"></i></a></li>
+	</ul>
+</div>
+</main>
+
+{% endblock %}

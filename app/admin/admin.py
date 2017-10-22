@@ -14,6 +14,7 @@ import logging
 from .. import services
 from namespace import *
 from forms import *
+from blurbs import *
 
 # Flask app app instance
 app = Flask(__name__)
@@ -61,3 +62,7 @@ app.add_url_rule('/admin/namespace/add',  view_func=AddNamespaceController)
 app.add_url_rule('/admin/forms/',  view_func=ListFormsController)
 app.add_url_rule('/admin/forms/view',  view_func=ViewFormController)
 app.add_url_rule('/admin/forms/edit',  view_func=EditFormController)
+
+app.add_url_rule('/admin/blurbs/',  view_func=ListBlurbsController)
+app.add_url_rule('/admin/blurbs/view',  view_func=ViewBlurbController)
+app.add_url_rule('/admin/blurbs/add',  view_func=AddBlurbController)

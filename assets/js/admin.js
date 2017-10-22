@@ -6,6 +6,7 @@ import { ViewNamespaceController } from './namespace.view';
 import { ViewSubmissionController } from './submissions.view';
 import { ListSubmissionController } from './submissions.list';
 import { AddNamespaceController } from './namespace.add';
+import { AddBlurbController } from './blurbs.add';
 
 // initialize UI
 initUI();
@@ -17,3 +18,4 @@ app.controller('ViewSubmissionController', ViewSubmissionController);
 app.controller('ListSubmissionController', ListSubmissionController);
 app.controller('AddNamespaceController', AddNamespaceController);
 app.controller('ViewNamespaceController', ViewNamespaceController);
+app.controller('AddBlurbController', AddBlurbController);

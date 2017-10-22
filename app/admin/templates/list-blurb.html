@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block body %}
+<header>
+	<h1>Blurb</h1>
+</header>
+<main>
+	{% if data.blurbID %}
+	<p class="controller-detail">Viewing blurbs for blurb ID: {{data.blurbID}}</p>
+	{% else %}
+	{% if data.namespaceID %}
+	<p class="controller-detail">Viewing blurbs for namespace ID: {{data.namespaceID}} <a class="btn waves-effect waves-light" title="View Namespace" href="/admin/namespace/view?namespaceID={{data.namespaceID | urlencode}}">View Namespace Details</a></p>
+	{% else %}
+	<p class="controller-detail">Viewing all blurbs</p>
+	{% endif %}
+	{% endif %}
+	
+	{% if data.blurbs %}
+	<table class="table table-border scrollableX">
+		<thead class="h5">
+			<tr><td>Blurb ID</td><td>Namespace</td><td>Date/Time<td></tr>
+		</thead>
+		<tbody>
+		{% for submission in data.blurbs %}
+		<tr>
+			<td>{{submission.blurbID}}</td>
+			<td><a href="/admin/blurbs/?namespaceID={{submission.namespaceID | urlencode }}">{{submission.namespaceID}}</a></td>
+			<td>{{ submission.datetime }}</td>
+			<td class="text-right">
+				<a href="/admin/blurbs/view?key={{ submission.key }}" class="btn">View</i></a> 
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>No blurbs yet.</p>
+	{% endif %}
+	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large">
+			<i class="fa fa-gear"></i>
+		</a>
+		<ul>
+			<li><a href="/admin/blurbs/add"  class="btn-floating" title="Add Blurb"><i class="fa fa-plus"></i></a></li>
+		</ul>
+	</div>
+</main>
+
+{% endblock %}

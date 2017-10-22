@@ -13,10 +13,10 @@ var _submissions2 = require('./submissions.list');
 
 var _namespace2 = require('./namespace.add');
 
-// initialize UI
-/* global angular */
+var _blurbs = require('./blurbs.add');
 
-(0, _admin.initUI)();
+// initialize UI
+(0, _admin.initUI)(); /* global angular */
 
 var app = angular.module('AdminApp', ['jsonFormatter', 'googlechart']);
 
@@ -25,8 +25,9 @@ app.controller('ViewSubmissionController', _submissions.ViewSubmissionController
 app.controller('ListSubmissionController', _submissions2.ListSubmissionController);
 app.controller('AddNamespaceController', _namespace2.AddNamespaceController);
 app.controller('ViewNamespaceController', _namespace.ViewNamespaceController);
+app.controller('AddBlurbController', _blurbs.AddBlurbController);
 
-},{"./admin.ui":2,"./dashboard.view":3,"./namespace.add":4,"./namespace.view":5,"./submissions.list":6,"./submissions.view":7}],2:[function(require,module,exports){
+},{"./admin.ui":2,"./blurbs.add":3,"./dashboard.view":4,"./namespace.add":5,"./namespace.view":6,"./submissions.list":7,"./submissions.view":8}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46,6 +47,63 @@ function initUI() {
 }
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.AddBlurbController = AddBlurbController;
+/* AddBlurbController */
+
+/* global $ */
+/* global angular */
+/* global location */
+/* global vex */
+
+function AddBlurbController($scope) {
+
+	$scope.data = {
+		namespaceID: '',
+		blurbID: '',
+		content: ''
+	};
+
+	$scope.key = window.uQuery('key');
+
+	// submit namepsace data
+	$scope.submit = function () {
+
+		console.log($scope.data);
+
+		if ($scope.data.content == '' || $scope.data.namespaceID == '' || $scope.data.blurbID == '') {
+			vex.dialog.alert('Enter a value for all fields');
+			return;
+		}
+
+		$.post('/_api/blurbs/save', $scope.data).done(function (result) {
+			console.log('The data was saved.');
+			console.log(result);
+			vex.dialog.alert({
+				'message': 'Blurb has been saved',
+				'callback': function callback() {
+					window.location = '/admin/blurbs/';
+				}
+			});
+		}).fail(function (result) {
+			vex.dialog.alert({
+				'message': 'An error occurred: ' + result,
+				'callback': function callback() {
+					console.log('An error has occurred:');
+					console.log(result);
+				}
+			});
+		});
+
+		return;
+	};
+}
+
+},{}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -118,7 +176,7 @@ function DashboardController($scope) {
 	});
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -174,7 +232,7 @@ function AddNamespaceController($scope) {
 	};
 }
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -223,7 +281,7 @@ function ViewNamespaceController($scope, $timeout) {
 	};
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -241,7 +299,7 @@ function ListSubmissionController($scope, $timeout) {
 	console.log('list form submissions');
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

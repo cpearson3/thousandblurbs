@@ -12,7 +12,7 @@ from .. import models
 
 import FormsAPI
 import NamespaceAPI
-
+import BlurbsAPI
 # Flask app app instance
 app = Flask(__name__)
 app.debug = True
@@ -58,3 +58,10 @@ app.add_url_rule('/_api/forms/export.csv',  view_func=FormsAPI.exportSubmissions
 app.add_url_rule('/_api/namespace/', view_func=NamespaceAPI.getNamespaces)
 app.add_url_rule('/_api/namespace/save', view_func=NamespaceAPI.saveNamespace, methods=['POST'])
 app.add_url_rule('/_api/namespace/delete',  view_func=NamespaceAPI.deleteNamespace, methods=['POST'])
+
+
+# Define BlurbsAPI Url Routes
+app.add_url_rule('/_api/blurbs/', view_func=BlurbsAPI.getBlurbs)
+app.add_url_rule('/_api/blurbs/save', view_func=BlurbsAPI.saveBlurb, methods=['POST'])
+app.add_url_rule('/_api/blurbs/delete',  view_func=BlurbsAPI.deleteBlurb, methods=['POST'])
+

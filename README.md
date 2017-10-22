@@ -11,6 +11,9 @@ Thousandblurbs is a web application starter kit built for the cloud using Google
 
 ## Changelog
 
+### 0.3.4
+* Added basic Blurb functionality (Admin Screens, URL Serving)
+
 ### 0.3.3
 * Added Email Notification Service (Disabled by default. Can be enabled in config)
 
