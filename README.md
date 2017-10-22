@@ -11,6 +11,9 @@ Thousandblurbs is a web application starter kit built for the cloud using Google
 
 ## Changelog
 
+### 0.3.3
+* Added Email Notification Service (Disabled by default. Can be enabled in config)
+
 ### 0.3.2
 * Form Submissions can be viewed by Namespace and by Form ID
 * Added navigational links between Namespace and Form Submission views

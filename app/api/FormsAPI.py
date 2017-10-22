@@ -4,6 +4,8 @@ from google.appengine.api import taskqueue
 from flask import Flask, render_template, url_for, request, Response, jsonify
 from wtforms import Form, StringField, TextAreaField, validators
 
+from google.appengine.ext import deferred
+
 import json
 import logging
 
@@ -95,7 +97,8 @@ def saveSubmission():
 
 		# update submission
 		try:
-			services.FormService.Save(data)
+			result = services.FormService.Save(data)
+
 		except Exception as e:
 			# Oh no, something went wrong
 			# return response object with error status code
@@ -110,19 +113,31 @@ def saveSubmission():
 			resp.status_code = 400
 			return resp	
 		
-		# success, trigger email notification
-		
-		if config.SEND_NOTIFICATIONS:
-			logging.warning('Trigger Email Notification Task')
-			services.EmailService.sendNotification(data)
-		
-		# success
-		resp = jsonify({
-			'status': 200,
-			'message': 'Successful save'
-		})
+		if result:
+			# success, trigger email notification
+			if config.SEND_NOTIFICATIONS:
+				logging.warning('Trigger Email Notification Task')
+				content = render_template('email-notification.html', data=data)
+				deferred.defer(services.EmailService.sendNotification, content)
+			
+			# success
+			resp = jsonify({
+				'status': 200,
+				'message': 'Successful save'
+			})
 
-		return resp
+			return resp
+
+		else:
+			# fail
+			# return response object with error status code
+			resp = jsonify({
+				'status': 400,
+				'error': 'Could not save submission'
+			})
+
+			resp.status_code = 400
+			return resp	
 	
 	else:
 		# FORM DATA IS INVALID

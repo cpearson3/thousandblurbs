@@ -4,12 +4,13 @@
 
 API_KEY = ""
 ALLOWED_DOMAINS = '*'
+ADMIN_EMAIL = ""
 SEND_NOTIFICATIONS = False
 
-APP_VERSION = "0.3.2"
+APP_VERSION = "0.3.3"
 
 SITE_TITLE = "Thousandblurbs"
-SITE_DESCRIPTION = "Manage form data retrieval using Google App Engine."
+SITE_DESCRIPTION = "Open Source Cloud Advertising Platform"
 NAV_TITLE = "Thousandblurbs"
 
 # Domain information

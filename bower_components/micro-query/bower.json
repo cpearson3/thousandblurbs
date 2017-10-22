@@ -1,0 +1,28 @@
+{
+  "name": "micro-query",
+  "version": "0.1.2",
+  "description": "A minimal url query parsing library.",
+  "main": "micro-query.js",
+  "keywords": [
+    "Params",
+    "query",
+    "parsing",
+    "url",
+    "querystring"
+  ],
+  "authors": [
+    {"name": "Aaron Harvey", "email" : "aaron.harvey@fairchildsemi.com" }
+  ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://bitbucket.org/aaronharvey/micro-query.git"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

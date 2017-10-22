@@ -123,7 +123,9 @@ def Save(data):
 		newObj.put()
 
 		logging.warning('FormService.Save SUCCESS')
-		return newObj.key
+		
+		data['datetime'] = newObj.datetime
+		return data
 
 	except Exception as e:
 		# handle error on save
