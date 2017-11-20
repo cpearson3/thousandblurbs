@@ -4,6 +4,7 @@
 
 from google.appengine.ext import ndb
 from .. import models
+from .. import util
 
 import NamespaceService
 
@@ -37,12 +38,16 @@ def GetAll(blurbID = None, namespaceID = None):
 				query = models.Blurb.query().order(-models.Blurb.datetime)
 		
 		for i in query.iter():
+			
+			logging.warning(i.metadata)
+			
 			obj = {
 				'key': i.key.urlsafe(),
 				'content': i.content,
 				'blurbID': i.blurbID,
 				'namespaceID': i.namespaceID,
 				'datetime': str(i.datetime),
+				'metadata': util.json_accetable(i.metadata)
 			}
 			result.append(obj)
 
@@ -65,6 +70,7 @@ def Get(key):
 			'blurbID': i.blurbID,
 			'namespaceID': i.namespaceID,
 			'datetime': str(i.datetime),
+			'metadata': util.json_accetable(i.metadata)
 		}
 
 		return result
@@ -118,6 +124,7 @@ def Save(data):
 		newObj.content = json.dumps(data['content'])
 		newObj.blurbID = data['blurbID']
 		newObj.namespaceID = data['namespaceID']
+		newObj.metadata = json.dumps(data['metadata'])
 		newObj.put()
 
 		logging.warning('BlurbService.Save SUCCESS')

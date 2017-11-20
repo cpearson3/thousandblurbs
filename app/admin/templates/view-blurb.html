@@ -2,28 +2,60 @@
 {% extends "base.html" %}
 {% block body %}
 <header>
-	<h1>View Blurbs</h1>
+	<h1>View / Edit Blurb</h1>
 </header>
-<main ng-controller="ViewBlurbsController">
-<p class="controller-detail">Blurbs ID: {{data.blurbID}} <a class="btn waves-effect waves-light" title="View Blurbs" href="/admin/blurbs/?namespaceID={{data.namespaceID | urlencode}}">View Blurbs for Namespace</a></p>
+<main ng-controller="ViewBlurbController">
+<p>Blurbs ID: <span id="blurbID">{{data.blurbID}}</span><br>
+NamespaceID: <span id="blurbNamespace">{{data.namespaceID}}</span>
+</p>
 <ul class="collection">
 	<li class="collection-item">
 		<h5>Date Submitted: {{data.datetime}}</h5>
+		<div class="hide" id="blurbKey">{{data.key}}</div>
+	</li>
+	<li class="collection-item">
+		<h5>Theme</h5>
+		<select ng-model="data.metadata.themeClass" class="browser-default">
+			<option value="light-background">Light Background</option>
+			<option value="dark-background">Dark Background</option>
+			<option value="slideIn-dark">SlideIn Dark</option>
+		</select>
+		<div class="hide" id="blurbThemeClass">{{data.metadata.themeClass}}</div>
+	</li>
+	<li class="collection-item">
+		<h5>Background Image</h5>
+		<input ng-model="data.metadata.background">
+		<div class="hide" id="blurbBackground">{{data.metadata.background}}</div>
 	</li>
 	<li class="collection-item">
 		<h5>Content</h5>
-		<p>
-		    {{data.content}}
-		</p>
+		<!-- ul class="tabs">
+			<li class="tab col s3"><a class="active" href="#previewTab">Preview</a></li>
+			<li class="tab col s3"><a href="#editTab">Edit</a></li>
+		</ul -->
+		<div class="row">
+			<div id="editTab" class="col s12 m8"  style="flex-wrap: wrap; align-items: flex-start">
+				<textarea ng-model="data.content" class="materialize-textarea" style="height: 100%; padding: 0"></textarea>
+				<div class="hide" id="blurbContent">{{data.content}}</div>
+			</div>
+			<div id="previewTab" class="col s12 m4"  style="flex-wrap: wrap">
+				<iframe src="/_api/blurbs/get/{{data.blurbID}}/" class="z-depth-3" id="previewIframe"
+				        width="250" height="250" scrolling="no" style="margin: 20px 0px; border: none">
+				</iframe>
+				<p style="width: 100%">
+					<a class="btn waves-light waves-effect" onclick="$('#previewIframe').attr('src', $('#previewIframe').attr('src'));">Refresh</a>
+				</p>
+			</div>
+		</div>
 	</li>
 </ul>
-<!-- a class="btn" ng-click="delete('{{ data.key }}')">Delete Blurbs <i class="fa fa-trash-o"></i></a -->
 <div class="fixed-action-btn">
 	<a class="btn-floating btn-large">
 		<i class="fa fa-gear"></i>
 	</a>
 	<ul>
-		<li><a ng-click="delete('{{ data.key }}')" class="btn-floating" title="Delete Blurbs"><i class="fa fa-trash"></i></a></li>
+		<li><a ng-click="delete('{{ data.key }}')" class="btn-floating" title="Delete Blurb"><i class="fa fa-trash"></i></a></li>
+		<li><a ng-click="save('{{ data.key }}')" class="btn-floating" title="Save Blurb"><i class="fa fa-save"></i></a></li>
 	</ul>
 </div>
 </main>

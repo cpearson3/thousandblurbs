@@ -7,7 +7,7 @@ import logging
 from config import *
 from util import *
 
-# simport tasks
+from api import BlurbsAPI
 
 # Flask app app instance
 app = Flask(__name__)
@@ -44,7 +44,7 @@ def IndexController(path):
 @app.route('/logout/')
 def LogoutController():
 	return redirect(users.create_logout_url('/'))
-
+	
 # 404 handler	
 @app.errorhandler(404)
 def page_not_found(e):

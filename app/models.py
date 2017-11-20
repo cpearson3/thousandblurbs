@@ -68,4 +68,5 @@ class Blurb(Model):
 	blurbID = ndb.StringProperty()
 	namespaceID = ndb.StringProperty()
 	content = ndb.TextProperty()
+	metadata = ndb.TextProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)

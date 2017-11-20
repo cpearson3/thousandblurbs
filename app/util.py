@@ -1,6 +1,7 @@
 # Global functions
 from config import *
 
+import json
 from google.appengine.api import users
 	
 def copyDict(a, b):
@@ -23,3 +24,6 @@ def initPageData():
 	return {
 		'context': context
 	}
+
+def json_accetable(s):
+	return json.loads(s.replace('\\"', '\"').replace("'", "\"")[1:-1]) if s != None and s != "null" else ''

@@ -62,6 +62,7 @@ app.add_url_rule('/_api/namespace/delete',  view_func=NamespaceAPI.deleteNamespa
 
 # Define BlurbsAPI Url Routes
 app.add_url_rule('/_api/blurbs/', view_func=BlurbsAPI.getBlurbs)
+app.add_url_rule('/_api/blurbs/get', view_func=BlurbsAPI.getBlurb)
 app.add_url_rule('/_api/blurbs/save', view_func=BlurbsAPI.saveBlurb, methods=['POST'])
 app.add_url_rule('/_api/blurbs/delete',  view_func=BlurbsAPI.deleteBlurb, methods=['POST'])
-
+app.add_url_rule('/_api/blurbs/get/<path:pID>/', view_func=BlurbsAPI.getBlurbByID)

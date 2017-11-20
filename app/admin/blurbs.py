@@ -1,12 +1,14 @@
-import logging
+from __future__ import unicode_literals
 
 # Blurbs Controllers
+import logging
 
 from .. import config
 from .. import util
 
 #  Import supporting libs
 from flask import Flask, render_template, url_for, request, jsonify
+import markdown
 
 from .. import services
 
@@ -16,25 +18,18 @@ from .. import services
 def ListBlurbsController():
 	logging.warning('ListBlurbsController:')
 	
-	formID = request.args.get('formID')
 	namespaceID = request.args.get('namespaceID')
 	submisssions = []
 	
-	# is formID passed
-	if formID:
-		logging.warning('BlurbID passed: ' + str(formID))
-		blurbs = services.BlurbService.GetAll(formID=formID)
+	# is namespaceID passed
+	if namespaceID:
+		logging.warning('NamespaceID passed: ' + str(namespaceID))
+		blurbs = services.BlurbService.GetAll(namespaceID=namespaceID)
 	else:
-		# is namespaceID passed
-		if namespaceID:
-			logging.warning('NamespaceID passed: ' + str(namespaceID))
-			blurbs = services.BlurbService.GetAll(namespaceID=namespaceID)
-		else:
-			# get all
-			blurbs = services.BlurbService.GetAll()
+		# get all
+		blurbs = services.BlurbService.GetAll()
 
 	data = util.initPageData()
-	data['formID'] = formID
 	data['namespaceID'] = namespaceID
 	data['blurbs'] = blurbs if blurbs else []
 	
@@ -71,5 +66,9 @@ def ViewBlurbController():
 	except Exception as e:
 		
 		logging.warning('Error: ' + str(e))
-
+	
+	logging.warning('data dump:' + str(data))
+	data['rendered'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+	data['content'] = data['content'][1:-1].replace('\\n','\n')
+	
 	return render_template('view-blurb.html', data=data)

@@ -10,6 +10,18 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Blurb
+  properties:
+  - name: blurbID
+  - name: datetime
+    direction: desc
+
+- kind: Blurb
+  properties:
+  - name: namespaceID
+  - name: datetime
+    direction: desc
+
 - kind: FormSubmission
   properties:
   - name: formID

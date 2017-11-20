@@ -15,8 +15,12 @@ var _namespace2 = require('./namespace.add');
 
 var _blurbs = require('./blurbs.add');
 
+var _blurbs2 = require('./blurbs.view');
+
 // initialize UI
-(0, _admin.initUI)(); /* global angular */
+/* global angular */
+
+(0, _admin.initUI)();
 
 var app = angular.module('AdminApp', ['jsonFormatter', 'googlechart']);
 
@@ -26,8 +30,9 @@ app.controller('ListSubmissionController', _submissions2.ListSubmissionControlle
 app.controller('AddNamespaceController', _namespace2.AddNamespaceController);
 app.controller('ViewNamespaceController', _namespace.ViewNamespaceController);
 app.controller('AddBlurbController', _blurbs.AddBlurbController);
+app.controller('ViewBlurbController', _blurbs2.ViewBlurbController);
 
-},{"./admin.ui":2,"./blurbs.add":3,"./dashboard.view":4,"./namespace.add":5,"./namespace.view":6,"./submissions.list":7,"./submissions.view":8}],2:[function(require,module,exports){
+},{"./admin.ui":2,"./blurbs.add":3,"./blurbs.view":4,"./dashboard.view":5,"./namespace.add":6,"./namespace.view":7,"./submissions.list":8,"./submissions.view":9}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44,6 +49,10 @@ function initUI() {
     $(".button-collapse").sideNav({
         //edge: 'right'
     });
+
+    // $('select').material_select();
+
+    $('ul.tabs').tabs();
 }
 
 },{}],3:[function(require,module,exports){
@@ -104,6 +113,105 @@ function AddBlurbController($scope) {
 }
 
 },{}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ViewBlurbController = ViewBlurbController;
+/* View Blurb controller */
+
+/* global $ */
+/* global angular */
+/* global location */
+/* global vex */
+
+function ViewBlurbController($scope, $timeout) {
+	console.log('viewing blurbs');
+
+	$scope.data = {
+		metadata: {
+			background: $('#blurbBackground').html(),
+			themeClass: $('#blurbThemeClass').html()
+		},
+		content: $('#blurbContent').html(),
+		namespaceID: $('#blurbNamespace').html(),
+		blurbID: $("#blurbID").html(),
+		blurbKey: $('#blurbKey').html()
+	};
+
+	console.log($scope.data);
+
+	$scope.delete = function (blurb_key) {
+		vex.dialog.confirm({
+			message: 'Are you sure you want to delete this blurb?',
+			callback: function callback(val) {
+				if (val) {
+					console.log('yes: ' + blurb_key);
+
+					var data = {
+						key: blurb_key
+					};
+
+					$.post('/_api/blurbs/delete', data).done(function (result) {
+						console.log(result);
+						//location.href = location.href;
+						vex.dialog.alert({
+							message: 'Blurb deleted.',
+							callback: function callback() {
+								window.location = '/admin/blurbs/';
+							}
+						});
+					}).fail(function (result) {
+						console.log(result);
+						vex.dialog.alert('Could not delete item');
+					});
+				} else {
+					console.log('i see you do not want to delete this.');
+				}
+			}
+		});
+	};
+
+	$scope.save = function (blurb_key) {
+		vex.dialog.confirm({
+			message: 'Are you sure you want to save blurb?',
+			callback: function callback(val) {
+				if (val) {
+					console.log('yes: ' + blurb_key);
+
+					var data = {
+						key: blurb_key,
+						namespaceID: $scope.data.namespaceID,
+						blurbID: $scope.data.blurbID,
+						metadata: JSON.stringify($scope.data.metadata),
+						content: $scope.data.content
+					};
+
+					console.log(data);
+
+					$.post('/_api/blurbs/save', data).done(function (result) {
+						console.log(result);
+						//location.href = location.href;
+						vex.dialog.alert({
+							message: 'Blurb saved.',
+							callback: function callback() {
+								window.location = '/admin/blurbs/view?key=' + $scope.data.blurbKey;
+							}
+						});
+					}).fail(function (result) {
+						console.log(result);
+						vex.dialog.alert('Could not save');
+					});
+				} else {
+					console.log('i see you do not want to save this.');
+				}
+			}
+		});
+	};
+}
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -176,7 +284,7 @@ function DashboardController($scope) {
 	});
 }
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -232,7 +340,7 @@ function AddNamespaceController($scope) {
 	};
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -281,7 +389,7 @@ function ViewNamespaceController($scope, $timeout) {
 	};
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -299,7 +407,7 @@ function ListSubmissionController($scope, $timeout) {
 	console.log('list form submissions');
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

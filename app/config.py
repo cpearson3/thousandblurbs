@@ -7,7 +7,7 @@ ALLOWED_DOMAINS = '*'
 ADMIN_EMAIL = ""
 SEND_NOTIFICATIONS = False
 
-APP_VERSION = "0.3.3"
+APP_VERSION = "0.3.4"
 
 SITE_TITLE = "Thousandblurbs"
 SITE_DESCRIPTION = "Open Source Cloud Advertising Platform"

@@ -9,4 +9,7 @@ export function initUI() {
         //edge: 'right'
     });
     
+   // $('select').material_select();
+    
+    $('ul.tabs').tabs();
 }

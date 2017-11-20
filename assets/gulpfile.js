@@ -18,6 +18,14 @@ gulp.task('stylesheet', function () {
     .pipe(gulp.dest('./build'));
 });
 
+gulp.task('blurb-scss', function () {
+  return gulp.src('./blurb-scss/blurb.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(csso())
+    .pipe(rename('blurb.css'))
+    .pipe(gulp.dest('./build'));
+});
+
 gulp.task('stylesheet:watch', function () {
 });
 
@@ -37,12 +45,13 @@ gulp.task('javascript', function() {
 // watch task
 gulp.task('watch', function() {
   gulp.watch('./scss/**/*.scss', ['stylesheet']);
+  gulp.watch('./blurb-scss/**/*.scss', ['blurb-scss']);
   gulp.watch('./js/**/*.js', ['javascript']);
 
 });
 
 // build task
-gulp.task('build', ['stylesheet','javascript']);
+gulp.task('build', ['stylesheet','javascript', 'blurb-scss']);
 
 // default task
 gulp.task('default', ['build', 'watch']);

@@ -9,13 +9,101 @@ from google.appengine.ext import deferred
 
 import json
 import logging
+import markdown
 
 # import project modules
 from .. import config
 from .. import services
 from .. import models
 
-# Get Blurbs
+
+# Get single blurb
+def getBlurb():
+	
+	logging.warning('BlurbsAPI call: getBlurb')
+	
+	try:
+		blurbKey = request.args.get('key')
+		
+		blurb = services.BlurbService.Get(blurbKey)
+		
+		if blurb:
+			data = models.Model.toDict(blurb)
+			# convert markdown
+			data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+		else:
+			data = {
+				'content': 'This Blurb Does Not Exist',
+				'blurbID': 'No Blurb Here'
+			}
+		
+	except Exception as e:
+		resp = jsonify({
+			'status': 400,
+			'error': 'Error in getBlurb controller: ' + str(e)
+		})
+
+		return resp
+	
+	dataType = request.args.get('dataType')
+	
+	if dataType == 'json':
+		return Response(json.dumps(data), mimetype="text/json")
+	else:
+		return render_template('blurb.html', data=data)
+		
+# Get by ID
+def getBlurbByID(pID=None):
+	
+	logging.warning('BlurbsAPI call: getBlurbByID')
+	
+	if pID:
+		blurbID = pID
+	else:
+		blurbID = request.args.get('id')
+	
+	if blurbID is None:
+		logging.warning('No blurb ID passed.')
+		
+		resp = jsonify({
+			'status': 400,
+			'error': 'Parameter Error: Blurb ID'
+		})
+
+		return resp
+	else:
+		logging.warning('blurb id passed: ' + blurbID)
+		
+	try:
+		blurb = services.BlurbService.GetAll(str(blurbID))[0]
+		
+		if blurb:
+			data = blurb
+			# convert markdown
+			data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+		else:
+			data = {
+				'content': 'This Blurb Does Not Exist',
+				'metadata': '',
+				'blurbID': 'No Blurb Here'
+			}
+		
+	except Exception as e:
+		resp = jsonify({
+			'status': 400,
+			'error': 'Error in getBlurbByID controller: ' + str(e)
+		})
+
+		return resp
+	
+	dataType = request.args.get('dataType')
+	
+	if dataType == 'json':
+		return Response(json.dumps(data), mimetype="text/json")
+	else:
+		return render_template('blurb.html', data=data)
+
+# Get All Blurbs
 def getBlurbs():
 
 	# TODO: Better logging
@@ -23,7 +111,8 @@ def getBlurbs():
 
 	# get objects
 	data = services.BlurbService.GetAll()
-
+	logging.warning(data)
+	
 	output = []
 
 	# convert datetime to string
@@ -44,7 +133,8 @@ def getBlurbs():
 class BlurbSubmission(Form):
 	blurbID = StringField('blurbID', [validators.Required(), validators.length(max=50)])
 	namespaceID = StringField('namespaceID', [validators.Required(), validators.length(max=50)])
-
+	content = TextAreaField('content', [validators.Required()])
+	
 def saveBlurb():
 	
 	data = {}
@@ -59,6 +149,7 @@ def saveBlurb():
 			'blurbID': request.form.get('blurbID'),
 			'namespaceID': request.form.get('namespaceID'),
 			'content': request.form.get('content'),
+			'metadata': request.form.get('metadata'),
 			'key': request.form.get('key'),
 		}		
 
@@ -94,6 +185,8 @@ def saveBlurb():
 
 		else:
 			# fail
+			logging.warning('No objected returned on save: 400')
+			
 			# return response object with error status code
 			resp = jsonify({
 				'status': 400,
@@ -105,6 +198,7 @@ def saveBlurb():
 	
 	else:
 		# FORM DATA IS INVALID
+		logging.warning('Invalid form data: 400')
 
 		# return response object with error status code
 		resp = jsonify({
@@ -158,54 +252,3 @@ def deleteBlurb():
 		})
 
 		return resp
-
-# save list of submissions
-def saveBlurbs():
-	
-	logging.warning('BlurbsAPI Call: saveBlurbs')
-
-	# GET and CONVERT data
-	try:
-
-		# get post data
-		post_data = request.form['data']
-
-		# convert json
-		v_data = json.loads(post_data)
-
-	except Exception as e:
-		resp = jsonify({
-			'status': 400,
-			'error': 'Error retrieving POST data: ' + str(e)
-		})
-
-		return resp
-
-	# Loop and save submissions
-	try:
-		for i in v_data:
-
-			#return Response(json.dumps(i), mimetype="text/json")
-
-			new_key = services.BlurbService.Save(i)
-
-			if new_key:
-				logging.warning('saved new key: ' +  str(new_key))
-			else:
-				logging.warning('could not save submission info: ' + str(i))
-
-	except Exception as e:
-		resp = jsonify({
-			'status': 400,
-			'error': 'Error parsing POST data: ' + str(e)
-		})
-
-		return resp
-		
-
-	resp = jsonify({
-		'status': 200,
-		'message': 'Saved list of submissions'
-	})
-
-	return resp
