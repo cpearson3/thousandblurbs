@@ -10,8 +10,7 @@ from .. import config
 from .. import services
 from .. import models
 
-import FormsAPI
-import NamespaceAPI
+import CampaignAPI
 import BlurbsAPI
 # Flask app app instance
 app = Flask(__name__)
@@ -47,22 +46,13 @@ def after_request(response):
 	response.headers.add('Access-Control-Allow-Methods', '*')
 	return response
 
-# Define FormsAPI Url Routes
-app.add_url_rule('/_api/forms/',  view_func=FormsAPI.getSubmission)
-app.add_url_rule('/_api/forms/save',  view_func=FormsAPI.saveSubmission, methods=['POST'])
-app.add_url_rule('/_api/forms/saveList',  view_func=FormsAPI.saveSubmissions, methods=['POST'])
-app.add_url_rule('/_api/forms/delete',  view_func=FormsAPI.deleteSubmission, methods=['POST'])
-app.add_url_rule('/_api/forms/export.csv',  view_func=FormsAPI.exportSubmissions)
-
-# Define NamespaceAPI Url Routes
-app.add_url_rule('/_api/namespace/', view_func=NamespaceAPI.getNamespaces)
-app.add_url_rule('/_api/namespace/save', view_func=NamespaceAPI.saveNamespace, methods=['POST'])
-app.add_url_rule('/_api/namespace/delete',  view_func=NamespaceAPI.deleteNamespace, methods=['POST'])
-
+# Define CampaignAPI Url Routes
+app.add_url_rule('/_api/campaign/', view_func=CampaignAPI.getCampaigns)
+app.add_url_rule('/_api/campaign/save', view_func=CampaignAPI.saveCampaign, methods=['POST'])
+app.add_url_rule('/_api/campaign/delete',  view_func=CampaignAPI.deleteCampaign, methods=['POST'])
 
 # Define BlurbsAPI Url Routes
 app.add_url_rule('/_api/blurbs/', view_func=BlurbsAPI.getBlurbs)
 app.add_url_rule('/_api/blurbs/get', view_func=BlurbsAPI.getBlurb)
 app.add_url_rule('/_api/blurbs/save', view_func=BlurbsAPI.saveBlurb, methods=['POST'])
 app.add_url_rule('/_api/blurbs/delete',  view_func=BlurbsAPI.deleteBlurb, methods=['POST'])
-app.add_url_rule('/_api/blurbs/get/<path:pID>/', view_func=BlurbsAPI.getBlurbByID)

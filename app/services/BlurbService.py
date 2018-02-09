@@ -6,12 +6,12 @@ from google.appengine.ext import ndb
 from .. import models
 from .. import util
 
-import NamespaceService
+import CampaignService
 
 import json
 import logging
 
-def GetAll(blurbID = None, namespaceID = None):
+def GetAll(blurbID = None):
 	"""
 	Get All Method
 	Args:
@@ -30,12 +30,7 @@ def GetAll(blurbID = None, namespaceID = None):
 		if blurbID:
 			query = models.Blurb.query(models.Blurb.blurbID == blurbID).order(-models.Blurb.datetime)
 		else:
-			# is namespaceID passed
-			if namespaceID:
-				query = models.Blurb.query(models.Blurb.namespaceID == namespaceID).order(-models.Blurb.datetime)
-			else:
-				# get all, order by datetime
-				query = models.Blurb.query().order(-models.Blurb.datetime)
+			query = models.Blurb.query().order(-models.Blurb.datetime)
 		
 		for i in query.iter():
 			
@@ -45,7 +40,6 @@ def GetAll(blurbID = None, namespaceID = None):
 				'key': i.key.urlsafe(),
 				'content': i.content,
 				'blurbID': i.blurbID,
-				'namespaceID': i.namespaceID,
 				'datetime': str(i.datetime),
 				'metadata': util.json_accetable(i.metadata)
 			}
@@ -68,7 +62,6 @@ def Get(key):
 			'key': i.key.urlsafe(),
 			'content': i.content,
 			'blurbID': i.blurbID,
-			'namespaceID': i.namespaceID,
 			'datetime': str(i.datetime),
 			'metadata': util.json_accetable(i.metadata)
 		}
@@ -87,24 +80,6 @@ def Save(data):
 		logging.warning('BlurbService.Save ERROR: no blurbID')
 		return None
 	
-	if 'namespaceID' not in data:
-		logging.warning('BlurbService.Save ERROR: no namespaceID')
-		return None
-		
-	# validate namespace
-	namespaces = NamespaceService.GetAllIDs()
-	
-	if namespaces:
-		logging.warning('Namespace IDs Retrieved: ' + str(namespaces))
-		
-		if data['namespaceID'] not in namespaces:
-			logging.warning('BlurbService.Save ERROR: Namespace %s is not valid' % (data['namespaceID']))
-			return None
-		
-	else:
-		logging.warning('BlurbService.Save ERROR: Could not retrieve namespace IDs')
-		return None
-
 	if 'key' in data:
 		if data['key']:
 			newObj = ndb.Key(urlsafe=data['key']).get()
@@ -121,14 +96,13 @@ def Save(data):
 
 	try:
 		# save some data in a model
-		newObj.content = json.dumps(data['content'])
+		newObj.content = data['content']
 		newObj.blurbID = data['blurbID']
-		newObj.namespaceID = data['namespaceID']
 		newObj.metadata = json.dumps(data['metadata'])
 		newObj.put()
 
 		logging.warning('BlurbService.Save SUCCESS')
-		
+		data['key'] = newObj.key.urlsafe()
 		data['datetime'] = newObj.datetime
 		return data
 

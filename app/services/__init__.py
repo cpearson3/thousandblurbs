@@ -1,4 +1,2 @@
-from FormService import *
-from NamespaceService import *
-from EmailService import *
+from CampaignService import *
 from BlurbService import *

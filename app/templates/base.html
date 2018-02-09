@@ -4,27 +4,66 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index">
-<title>{{data.context.title}}</title>
-<meta name="description" content="{{data.context.description}}">
-<meta name="description" content="{{data.context.description}}">
-<meta property="og:title" content="{{data.context.title}}">
-<meta property="og:description" content="{{data.context.description}}">
-<meta property="og:image" content="{{data.context.image}}">
-<meta property="og:url" content="{{data.context.base_url}}">
-<meta name="twitter:title" content="{{data.context.title}}">
-<meta name="twitter:description" content="{{data.context.description}}">
-<meta name="twitter:image" content="{{data.context.image}}">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/assets/build/style.css">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-<script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
-<script src="/bower_components/bootsmooth/dist/bootsmooth.js"></script>
+<title>Create and Host HTML5 Ads and Components - Thousandblurbs</title>
+<meta name="description" content="Open Source Advertising Platform">
+<link href="/assets/build/style.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js" defer></script>
+<script "/assets/build/site.build.js" defer></script>
 </head>
 <body class="login">
-
+<nav id="nav-top" class="uk-navbar-container uk-box-shadow" uk-navbar>
+    <div class="uk-navbar-left">
+        <a class="uk-navbar-item uk-logo" href="/">Thousandblurbs</a>
+    </div>
+    <div class="uk-navbar-center">
+        <ul class="uk-navbar-nav">
+            <li>
+                <a href="https://thousandblurbs.com/about/" target="_blank">
+                Features
+                </a>
+            </li>
+            <li>
+                <a href="https://thousandblurbs.com/documentation/" target="_blank">
+                Documentation
+                </a>
+            </li>
+             <li>
+                <a href="https://thousandblurbs.com/support/" target="_blank">
+                Get Support
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            <li>
+                <a href="https://github.com/cpearson3/thousandblurbs" target="_blank">Github Project <span class="uk-icon uk-margin-small-left" uk-icon="icon: github"></span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/">
+                Sign In <span class="uk-icon uk-margin-small-left" uk-icon="icon: sign-in"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="uk-margin-large-top uk-margin-large-bottom">
 {% block content %}
 {% endblock %}
-{% include 'footer.html' %}
+</div>
 
+<div class="uk-container uk-flex uk-flex-center">
+    <div class="uk-width-3-5@s uk-text-center">
+		<p>
+			<a href="https://thousandblurbs.com" target="_blank">THOUSANDBLURBS</a> -
+			Released under <a href="https://opensource.org/licenses/MIT" target="_blank">The MIT License</a>
+		</p>
+		<p>
+		   Developed with <span uk-icon="icon: heart"></span> by <a href="https://performancecloudconsulting.com/?utm_campaign=ThousandblurbsAdmin" target="_blank">Performance Cloud Consulting LLC</a>
+	    </p>
+	</div>
+</div>
 </body>
 </html>

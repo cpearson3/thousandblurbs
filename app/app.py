@@ -7,7 +7,7 @@ import logging
 from config import *
 from util import *
 
-from api import BlurbsAPI
+import api
 
 # Flask app app instance
 app = Flask(__name__)
@@ -18,7 +18,7 @@ app = Flask(__name__)
 @app.before_request
 def AppspotRedirect():
 
-	if CUSTOM_DOMAIN == '':
+	if HOST == '':
 		logging.warning('no custom domain set')
 		return
 	
@@ -27,21 +27,23 @@ def AppspotRedirect():
 	
 	if domain == APPENGINE_DOMAIN:
 		
-		redirect_url = CUSTOM_DOMAIN + request.script_root + request.path
+		redirect_url = HOST + request.script_root + request.path
 		logging.warning('redirecting to: ' + redirect_url)
 
 		return redirect(redirect_url, code=301)
 
 # URL Routes
+
+# Index
 @app.route('/', defaults={'path': ''})
 def IndexController(path):
 	# Return index
 	data = initPageData()
 	return render_template('index.html', data=data)
 	
-# Logout handler
-@app.route('/logout')
-@app.route('/logout/')
+# Signout handler
+@app.route('/signout')
+@app.route('/signout/')
 def LogoutController():
 	return redirect(users.create_logout_url('/'))
 	
@@ -56,3 +58,6 @@ def page_not_found(e):
 def server_error(e):
 	data = initPageData()
 	return render_template('500.html', data=data), 500
+
+# Blurb Route Handler
+app.add_url_rule('/blurbs/<path:pID>/', view_func=api.BlurbsAPI.getBlurbByID)

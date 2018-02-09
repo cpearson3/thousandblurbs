@@ -49,24 +49,16 @@ class Model(ndb.Model):
 		except:
 			return 0
 
-# Namespace Model
-class Namespace(Model):
-	namespaceID = ndb.StringProperty()
+# Campaign Model
+class Campaign(Model):
+	campaignID = ndb.StringProperty()
 	description = ndb.TextProperty()
-	datetime = ndb.DateTimeProperty(auto_now_add=True)
-
-# Form Submission Model
-class FormSubmission(Model):
-	formID = ndb.StringProperty()
-	namespaceID = ndb.StringProperty()
-	data = ndb.TextProperty()
-	clientIP = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
 
 # Blurb Model
 class Blurb(Model):
 	blurbID = ndb.StringProperty()
-	namespaceID = ndb.StringProperty()
 	content = ndb.TextProperty()
 	metadata = ndb.TextProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
+

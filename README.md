@@ -1,15 +1,20 @@
 # Thousandblurbs
-Thousandblurbs is a web application starter kit built for the cloud using Google App Engine, Python and Flask.
+Thousandblurbs is a platform for creating and hosting HTML ads on Google App Engine
 
 ## Features include:
 
-* API to capture, store, and retrieve form data using Google App Engine and the Cloud Datastore
-* Control user access using Google Cloud management
-* Segment data into namespaces to accomodate for multiple data sources
-* Export captured data as a CSV file
-* Form capture service and maintenance using Google Cloud Datastore
+* Built with Python and Flask.
+* Control access with Google Cloud user management tools.
 
 ## Changelog
+
+### 0.4.0
+Thousandblurbs is now focused solely on being an HTML ad platform.
+Form submission code has been split into its own project ( [View on Github](https://github.com/cpearson3/appengine-form-capture) )
+
+* Added iframe embed code to blurbs admin
+* Blurb links now open in new window
+
 
 ### 0.3.4
 * Added Blurbs - Responsive HTML Ads

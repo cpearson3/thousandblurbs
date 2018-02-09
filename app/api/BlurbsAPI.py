@@ -30,7 +30,8 @@ def getBlurb():
 		if blurb:
 			data = models.Model.toDict(blurb)
 			# convert markdown
-			data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+			# data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+			data['content'] = markdown.markdown(data['content'])
 		else:
 			data = {
 				'content': 'This Blurb Does Not Exist',
@@ -80,7 +81,8 @@ def getBlurbByID(pID=None):
 		if blurb:
 			data = blurb
 			# convert markdown
-			data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+			# data['content'] = markdown.markdown(data['content'][1:-1].replace('\\n','\n'))
+			data['content'] = markdown.markdown(data['content'])
 		else:
 			data = {
 				'content': 'This Blurb Does Not Exist',
@@ -132,7 +134,6 @@ def getBlurbs():
 # - Blurb ID is required
 class BlurbSubmission(Form):
 	blurbID = StringField('blurbID', [validators.Required(), validators.length(max=50)])
-	namespaceID = StringField('namespaceID', [validators.Required(), validators.length(max=50)])
 	content = TextAreaField('content', [validators.Required()])
 	
 def saveBlurb():
@@ -147,11 +148,10 @@ def saveBlurb():
 	if form.validate():
 		data = {
 			'blurbID': request.form.get('blurbID'),
-			'namespaceID': request.form.get('namespaceID'),
 			'content': request.form.get('content'),
 			'metadata': request.form.get('metadata'),
-			'key': request.form.get('key'),
-		}		
+			'key': request.form.get('key')
+		}
 
 		logging.warning('key passed: ' + str(data['key']))
 
@@ -178,6 +178,7 @@ def saveBlurb():
 			# success
 			resp = jsonify({
 				'status': 200,
+				'key': result['key'],
 				'message': 'Successful save'
 			})
 

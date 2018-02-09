@@ -7,20 +7,29 @@ var gulp = require("gulp"),
     source = require("vinyl-source-stream"),
     sass = require('gulp-sass'),
     csso = require('gulp-csso'),
-    rename = require('gulp-rename')
+    rename = require('gulp-rename'),
+    vueify = require('vueify'),
+    babelify = require('babelify')
 ;
+
+// stylesheet tasks
+gulp.task('stylesheet', ['blurb-scss', 'site-scss']);
     
-gulp.task('stylesheet', function () {
-  return gulp.src('./scss/style.scss')
-    .pipe(sass().on('error', sass.logError))
+gulp.task('site-scss', function () {
+  return gulp.src('./scss/site/style.scss')
+    .pipe(sass({
+      includePaths: ['../node_modules/']
+    }).on('error', sass.logError))
     .pipe(csso())
     .pipe(rename('style.css'))
     .pipe(gulp.dest('./build'));
 });
 
 gulp.task('blurb-scss', function () {
-  return gulp.src('./blurb-scss/blurb.scss')
-    .pipe(sass().on('error', sass.logError))
+  return gulp.src('./scss/blurb/blurb.scss')
+    .pipe(sass({
+      includePaths: ['../node_modules/']
+    }).on('error', sass.logError))
     .pipe(csso())
     .pipe(rename('blurb.css'))
     .pipe(gulp.dest('./build'));
@@ -29,29 +38,49 @@ gulp.task('blurb-scss', function () {
 gulp.task('stylesheet:watch', function () {
 });
 
-gulp.task('javascript', function() {
+// javascript tasks
+gulp.task('javascript', ['admin-js', 'site-js']);
+
+gulp.task('admin-js', function() {
    return browserify({
-        entries: ["./js/admin.js"]
+        entries: ['./js/admin/app.js'],
+        _flags: {debug: true}
+      })
+      .transform(babelify.configure({
+          presets : ["es2015"]
+      }))
+      .transform(vueify)
+      .bundle()
+      .pipe(source('admin.build.js'))
+      .pipe(gulp.dest('./build'));
+});
+
+gulp.task('site-js', function() {
+   return browserify({
+        entries: ["./js/site/site-app.js"]
     })
     .transform(babelify.configure({
         presets : ["es2015"]
     }))
     .bundle()
-    .pipe(source("bundle.js"))
+    .pipe(source("site.build.js"))
     .pipe(gulp.dest("./build"))
   ;
 });
 
 // watch task
 gulp.task('watch', function() {
-  gulp.watch('./scss/**/*.scss', ['stylesheet']);
-  gulp.watch('./blurb-scss/**/*.scss', ['blurb-scss']);
-  gulp.watch('./js/**/*.js', ['javascript']);
+  gulp.watch('./scss/site/**/*.scss', ['stylesheet']);
+  gulp.watch('./scss/blurb/**/*.scss', ['blurb-scss']);
+  gulp.watch('./scss/*.scss', ['stylesheet', 'blurb-scss']);
+  
+  gulp.watch( ['./js/admin/**/*.js', './js/admin/**/*.vue'], ['admin-js']);
+  gulp.watch('./js/site/**/*.js', ['site-js']);
 
 });
 
 // build task
-gulp.task('build', ['stylesheet','javascript', 'blurb-scss']);
+gulp.task('build', ['stylesheet','javascript']);
 
 // default task
 gulp.task('default', ['build', 'watch']);

@@ -1,23 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-<header>
-	<div class="container">
-		<h1>Thousandblurbs</h1>
-		<h2>{{data.context.description}}</h2>
-	</div>
-</header>
-<section class="bg">
-<div class="container" style="max-width: 600px; padding: 25px 0">
-	<div class="card hoverable">
-		<div class="card-content">
-			<span class="card-title">Login with your Google Account</span>
-			<p>You must have <em>administrative rights</em> in order to access this application.</p>
+<div class="uk-container uk-flex uk-flex-center">
+	<div class="uk-card uk-card-default uk-box-shadow-small uk-width-3-5@s">
+		<div class="uk-card-header">
+			<h1>Create HTML5 Ads.<br>Host them in the Cloud.</h1>
 		</div>
-		<div class="card-action">
-			<a href="/admin/">Login <i class="fa fa-sign-in"></i></a>
-			<a href="https://thousandblurbs.com">What is Thousandblurbs <i class="fa fa-question"></i></a>
+		<div class="uk-card-body">
+			<p class="uk-text-large"><strong>Thousandblurbs</strong> is an open-source advertising platform powered by Google App Engine. 
+			Login with your Google Account to get started.</p>
+			<p class="uk-alert uk-alert-muted">You must have <em>administrative rights</em> in order to access this application.</p>
+		</div>
+		<div class="uk-card-footer">
+			<a href="/admin/" class="uk-button uk-button-primary">Sign In <span class="uk-icon uk-margin-small-left" uk-icon="icon: sign-in"></a>
+			<a href="/about/" class="uk-button uk-button-secondary">What is Thousandblurbs <span class="uk-icon uk-margin-small-left" uk-icon="icon: question"></a>
 		</div>
 	</div>
 </div>
-</section>
 {% endblock %}
